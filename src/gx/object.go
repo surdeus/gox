@@ -1,9 +1,14 @@
 package gx
 
 type Behaver interface {
-	Start()
-	Update()
+	Start(*Engine)
+	Update(*Engine)
 	GetObject() *Object
+}
+
+// The object that is drawn by sprite
+/// based on the transform.
+type Sprite struct {
 }
 
 // The object type represents
@@ -13,9 +18,10 @@ type Object struct {
 	T Transform
 }
 
-func (o *Object) Start() {}
-func (o *Object) Update() {}
-func (o *Object) GetObject() *Object {
-	return o
+// The functions that 
+func (o Object) Start(e *Engine) {}
+func (o Object) Update(e *Engine) {}
+func (o Object) GetObject() *Object {
+	return &o
 }
 
