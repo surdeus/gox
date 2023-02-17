@@ -5,7 +5,13 @@ import (
 )
 
 type Player struct {
-	gx.Object
+	*gx.Object
+}
+
+func NewPlayer() *Player {
+	return &Player{
+		Object: &gx.Object{},
+	}
 }
 
 func main() {
@@ -15,6 +21,6 @@ func main() {
 		Height: 320,
 	})
 
-	e.Add(0, Player{})
+	e.Add(0, NewPlayer())
 	e.Run()
 }

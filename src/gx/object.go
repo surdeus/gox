@@ -6,11 +6,6 @@ type Behaver interface {
 	GetObject() *Object
 }
 
-// The object that is drawn by sprite
-/// based on the transform.
-type Sprite struct {
-}
-
 // The object type represents
 // basic information for interaction
 // with the engine.
@@ -19,9 +14,9 @@ type Object struct {
 }
 
 // The functions that 
-func (o Object) Start(e *Engine) {}
-func (o Object) Update(e *Engine) {}
-func (o Object) GetObject() *Object {
-	return &o
+func (o *Object) Start(e *Engine) {}
+func (o *Object) Update(e *Engine) {}
+func (o *Object) GetObject() *Object {
+	return o
 }
 
