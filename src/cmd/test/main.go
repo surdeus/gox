@@ -20,8 +20,9 @@ func NewPlayer() *Player {
 		Sprite: &gx.Sprite{
 			Object: &gx.Object{
 				T: gx.Transform {
-					P: gx.Vector{1, 1},
+					P: gx.Vector{100, 150},
 					S: gx.Vector{5, 5},
+					RA: gx.Vector{200, 200},
 				},
 			},
 			Image: playerImg,
