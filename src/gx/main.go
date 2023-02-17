@@ -70,15 +70,19 @@ func (e *Engine) AddBehaver(b Behaver) {
 	e.behavers = append(e.behavers, b)
 }
 
+func (e *engine) setNewDT() {
+	e.dt = time.Since(e.lastTime).Seconds()
+	e.lastTime = time.Now()
+}
+
 func (e *engine) Update() error {
 	eng := (*Engine)(e)
 
-	e.dt = time.Since(e.lastTime).Seconds()
+	e.setNewDT()
 	for _, v := range eng.behavers {
 		v.Update(eng)
 		//fmt.Println(v)
 	}
-	e.lastTime = time.Now()
 
 	return nil
 }
@@ -105,6 +109,8 @@ func (e *Engine) DT() Float {
 func (e *Engine) Run() error {
 	ebiten.SetWindowTitle(e.wcfg.Title)
 	ebiten.SetWindowSize(e.wcfg.Width, e.wcfg.Height)
+
+	e.lastTime = time.Now()
 
 	return ebiten.RunGame((*engine)(e))
 }

@@ -21,7 +21,7 @@ func NewPlayer() *Player {
 			Object: &gx.Object{
 				T: gx.Transform {
 					P: gx.Vector{1, 1},
-					S: gx.Vector{1, 1},
+					S: gx.Vector{5, 5},
 				},
 			},
 			Image: playerImg,
@@ -30,7 +30,7 @@ func NewPlayer() *Player {
 }
 
 func (p *Player) Update(e *gx.Engine) {
-	p.Sprite.Object.T.P.Y += 0.1
+	p.Sprite.Object.T.P.Y += 40 * e.DT()
 }
 
 func main() {
