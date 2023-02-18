@@ -18,6 +18,10 @@ type Transform struct {
 	R Float
 }
 
+func V(x, y Float) Vector {
+	return Vector{x, y}
+}
+
 func T() Transform {
 	ret := Transform{}
 	return ret

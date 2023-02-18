@@ -38,6 +38,8 @@ func NewPlayer() *Player {
 }
 
 func (p *Player) Start(e *gx.Engine) {
+	c := e.Camera()
+	c.Object.T.RA = gx.V(360, -120)
 }
 
 func (p *Player) Update(e *gx.Engine) error {
@@ -84,12 +86,14 @@ func (p *Player) Update(e *gx.Engine) error {
 		} else {
 			c.Object.T.RA.X += gx.Pi * p.MoveSpeed * dt
 		}
+		log.Println(c.Object.T.RA.X)
 	case ebiten.KeyX :
 		if e.KeyIsPressed(ebiten.KeyShift) {
 			c.Object.T.RA.Y -= gx.Pi * p.MoveSpeed * dt
 		} else {
 			c.Object.T.RA.Y += gx.Pi * p.MoveSpeed * dt
 		}
+		log.Println(c.Object.T.RA.Y)
 	}}
 
 	return nil

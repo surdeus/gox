@@ -66,6 +66,7 @@ func (e *Engine) Add(l Layer, b any) {
 	beh, ok := b.(Behaver)
 	if ok {
 		e.AddBehaver(beh)
+		beh.Start(e)
 	}
 
 	drw, ok := b.(Drawer)
