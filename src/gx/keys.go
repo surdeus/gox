@@ -6,3 +6,13 @@ import (
 
 type Key = ebiten.Key
 
+func (e *Engine) KeyIsPressed(k Key) bool {
+	keys := e.Keys()
+	for _, v := range keys {
+		if v == k {
+			return true
+		}
+	}
+
+	return false
+}

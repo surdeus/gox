@@ -12,6 +12,7 @@ import (
 type Player struct {
 	*gx.Sprite
 	MoveSpeed gx.Float
+	ScaleSpeed gx.Float
 }
 
 type Debug struct{}
@@ -33,6 +34,7 @@ func NewPlayer() *Player {
 			Image: playerImg,
 		},
 		MoveSpeed: 90.,
+		ScaleSpeed: .2,
 	}
 }
 
@@ -59,9 +61,21 @@ func (p *Player) Update(e *gx.Engine) error {
 	case ebiten.KeyD :
 		p.Object.T.P.X += p.MoveSpeed * dt
 	case ebiten.KeyR :
-		c.Object.T.R += gx.Pi * .3 * dt
+		c.Object.T.R += gx.Pi * p.ScaleSpeed * dt
 	case ebiten.KeyT :
-		c.Object.T.R -= gx.Pi * .3 * dt
+		c.Object.T.R -= gx.Pi * p.ScaleSpeed * dt
+	case ebiten.KeyF :
+		if e.KeyIsPressed(ebiten.KeyShift) {
+			c.Object.T.S.X -= gx.Pi * p.ScaleSpeed * dt
+		} else {
+			c.Object.T.S.X += gx.Pi * p.ScaleSpeed * dt
+		}
+	case ebiten.KeyG :
+		if e.KeyIsPressed(ebiten.KeyShift) {
+			c.Object.T.S.Y -= gx.Pi * p.ScaleSpeed * dt
+		} else {
+			c.Object.T.S.Y += gx.Pi * p.ScaleSpeed * dt
+		}
 	}}
 
 	return nil
