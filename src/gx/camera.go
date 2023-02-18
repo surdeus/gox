@@ -14,8 +14,8 @@ func (c *Camera)Matrix(scale bool) Matrix {
 	g := &Matrix{}
 
 	g.Translate(
-		c.Object.T.RA.X,
-		c.Object.T.RA.Y,
+		-c.Object.T.RA.X,
+		-c.Object.T.RA.Y,
 	)
 
 	g.Rotate(c.Object.T.R)

@@ -2,6 +2,7 @@ package gx
 
 import (
 	"github.com/hajimehoshi/ebiten/v2"
+	"github.com/hajimehoshi/ebiten/v2/inpututil"
 	"github.com/surdeus/godat/src/sparsex"
 	//"fmt"
 	"time"
@@ -23,12 +24,17 @@ type Engine struct {
 	lastTime time.Time
 	dt Float
 	camera *Camera
+	keys []Key
 }
 
 type engine Engine
 
 func (e *Engine) Camera() *Camera {
 	return e.camera
+}
+
+func (e *Engine) Keys() []Key {
+	return e.keys
 }
 
 func New(
@@ -43,7 +49,8 @@ func New(
 		camera: &Camera{
 			Object: &Object{
 				T: Transform{
-					S: Vector{0.1, 1},
+					S: Vector{1, 1},
+					RA: Vector{480, 320},
 				},
 			},
 		},
@@ -84,6 +91,9 @@ func (e *Engine) AddBehaver(b Behaver) {
 
 func (e *engine) Update() error {
 	eng := (*Engine)(e)
+
+	e.keys = inpututil.
+		AppendPressedKeys(e.keys[:0])
 
 	e.dt = time.Since(e.lastTime).Seconds()
 	for _, v := range eng.behavers {
