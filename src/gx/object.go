@@ -2,7 +2,7 @@ package gx
 
 type Behaver interface {
 	Start(*Engine)
-	Update(*Engine)
+	Update(*Engine) error
 }
 
 // The object type represents
@@ -13,7 +13,9 @@ type Object struct {
 }
 
 func (o *Object) Start(e *Engine) {}
-func (o *Object) Update(e *Engine) {}
+func (o *Object) Update(e *Engine) error {
+	return nil
+}
 func (o *Object) GetObject() *Object {
 	return o
 }

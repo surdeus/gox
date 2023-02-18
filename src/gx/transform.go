@@ -31,7 +31,7 @@ func (t Transform)Matrix() Matrix {
 	g.Scale(t.S.X, t.S.Y)
 	g.Translate(-t.RA.X, -t.RA.Y)
 	g.Rotate(t.R)
-	g.Translate(t.P.X, t.P.Y)
+	g.Translate(t.P.X, -t.P.Y)
 
 	return *g
 }

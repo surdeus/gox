@@ -3,13 +3,18 @@ package main
 import (
 	"github.com/surdeus/gox/src/gx"
 	"github.com/hajimehoshi/ebiten/v2/examples/resources/images"
+	"github.com/hajimehoshi/ebiten/v2"
 	"bytes"
 	"log"
+	"strings"
 )
 
 type Player struct {
 	*gx.Sprite
+	MoveSpeed gx.Float
 }
+
+type Debug struct{}
 
 var (
 	playerImg *gx.Image
@@ -27,23 +32,57 @@ func NewPlayer() *Player {
 			},
 			Image: playerImg,
 		},
+		MoveSpeed: 90.,
 	}
 }
 
-func (p *Player) Update(e *gx.Engine) {
-	//p.Sprite.Object.T.P.Y += 40 * e.DT()
+func (p *Player) Update(e *gx.Engine) error {
 	dt := e.DT()
 	c := e.Camera()
-	//c.Object.T.P.X += 40 * dt
-	//c.Object.T.S.X += .01 * dt
-	c.Object.T.R += .2 * dt
+	keys := e.Keys()
+
+	for _, v := range keys {switch v {
+	case ebiten.KeyArrowUp :
+		c.Object.T.P.Y += p.MoveSpeed * dt
+	case ebiten.KeyArrowLeft :
+		c.Object.T.P.X -= p.MoveSpeed * dt
+	case ebiten.KeyArrowDown :
+		c.Object.T.P.Y -= p.MoveSpeed * dt
+	case ebiten.KeyArrowRight :
+		c.Object.T.P.X += p.MoveSpeed * dt
+	case ebiten.KeyW :
+		p.Object.T.P.Y += p.MoveSpeed * dt
+	case ebiten.KeyA :
+		p.Object.T.P.X -= p.MoveSpeed * dt
+	case ebiten.KeyS :
+		p.Object.T.P.Y -= p.MoveSpeed * dt
+	case ebiten.KeyD :
+		p.Object.T.P.X += p.MoveSpeed * dt
+	case ebiten.KeyR :
+		c.Object.T.R += gx.Pi * .3 * dt
+	case ebiten.KeyT :
+		c.Object.T.R -= gx.Pi * .3 * dt
+	}}
+
+	return nil
+}
+
+func (d *Debug) Draw(
+	e *gx.Engine,
+	i *gx.Image,
+) {
+	keyStrs := []string{}
+	for _, k := range e.Keys() {
+		keyStrs = append(keyStrs, k.String())
+	}
+	e.DebugPrint(i, strings.Join(keyStrs, ", "))
 }
 
 func main() {
 	e := gx.New(&gx.WindowConfig{
 		Title: "Test title",
-		Width: 480,
-		Height: 320,
+		Width: 720,
+		Height: 480,
 	})
 
 	var err error
@@ -54,5 +93,6 @@ func main() {
 
 
 	e.Add(0, NewPlayer())
+	e.Add(1, &Debug{})
 	e.Run()
 }

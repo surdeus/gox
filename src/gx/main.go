@@ -14,7 +14,7 @@ type Layer int
 type WindowConfig struct {
 	Title string
 	Width, Height int
-	FullScreen bool
+	FixedSize bool
 }
 
 type Engine struct {
@@ -90,6 +90,7 @@ func (e *Engine) AddBehaver(b Behaver) {
 }
 
 func (e *engine) Update() error {
+	var err error
 	eng := (*Engine)(e)
 
 	e.keys = inpututil.
@@ -97,14 +98,15 @@ func (e *engine) Update() error {
 
 	e.dt = time.Since(e.lastTime).Seconds()
 	for _, v := range eng.behavers {
-		v.Update(eng)
-		//fmt.Println(v)
+		err = v.Update(eng)
+		if err != nil {
+			return err
+		}
 	}
 	e.lastTime = time.Now()
 
 	return nil
 }
-
 
 func (e *engine) Draw(i *ebiten.Image) {
 	eng := (*Engine)(e)
@@ -116,7 +118,10 @@ func (e *engine) Draw(i *ebiten.Image) {
 }
 
 func (e *engine) Layout(ow, oh int) (int, int) {
-	return e.wcfg.Width, e.wcfg.Height
+	if e.wcfg.FixedSize {
+		return e.wcfg.Width, e.wcfg.Height
+	}
+	return ow, oh
 }
 
 // Return the delta time duration value.

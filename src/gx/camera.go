@@ -1,10 +1,18 @@
 package gx
 
+import (
+	"math"
+)
+
 // Implements the camera component
 // for the main window.
 type Camera struct {
 	*Object
 }
+
+const (
+	Pi = math.Pi
+)
 
 // Returns the matrix satysfying camera
 // position, scale and rotation to apply
@@ -13,16 +21,17 @@ type Camera struct {
 func (c *Camera)Matrix(scale bool) Matrix {
 	g := &Matrix{}
 
+	// For rotating around.
 	g.Translate(
 		-c.Object.T.RA.X,
-		-c.Object.T.RA.Y,
+		c.Object.T.RA.Y,
 	)
 
 	g.Rotate(c.Object.T.R)
 
 	g.Translate(
 		-c.Object.T.P.X,
-		-c.Object.T.P.Y,
+		c.Object.T.P.Y,
 	)
 
 	if scale {
