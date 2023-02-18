@@ -15,8 +15,9 @@ func (s *Sprite) Draw(
 	i *Image,
 ) {
 	op := &ebiten.DrawImageOptions{}
-	m := s.Object.T.Matrix(e)
+	m := &Matrix{}
 
+	m.Concat(s.Object.T.Matrix(e))
 	if e.camera != nil {
 		m.Concat(e.camera.RealMatrix(
 			e,
@@ -24,7 +25,7 @@ func (s *Sprite) Draw(
 		))
 	}
 
-	op.GeoM = m
+	op.GeoM = *m
 	i.DrawImage(s.Image, op)
 }
 

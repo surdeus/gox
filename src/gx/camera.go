@@ -24,11 +24,13 @@ func (c *Camera)RealMatrix(
 ) Matrix {
 	g := &Matrix{}
 
-	// For rotating around.
-	g.Translate(
-		-c.Object.T.RA.X,
-		c.Object.T.RA.Y,
-	)
+
+	if scale {
+		g.Scale(
+			c.Object.T.S.X,
+			c.Object.T.S.Y,
+		)
+	}
 
 	g.Translate(
 		-c.Object.T.P.X,
@@ -40,13 +42,6 @@ func (c *Camera)RealMatrix(
 		c.Object.T.RA.X,
 		-c.Object.T.RA.Y,
 	)
-
-	if scale {
-		g.Scale(
-			c.Object.T.S.X,
-			c.Object.T.S.Y,
-		)
-	}
 
 	return *g
 }

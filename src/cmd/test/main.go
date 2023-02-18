@@ -39,7 +39,7 @@ func NewPlayer() *Player {
 
 func (p *Player) Start(e *gx.Engine) {
 	c := e.Camera()
-	c.Object.T.RA = gx.V(360, -120)
+	c.Object.T.RA = gx.V(360, -240)
 }
 
 func (p *Player) Update(e *gx.Engine) error {

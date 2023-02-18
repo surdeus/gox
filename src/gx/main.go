@@ -137,6 +137,7 @@ func (e *Engine) DT() Float {
 func (e *Engine) Run() error {
 	ebiten.SetWindowTitle(e.wcfg.Title)
 	ebiten.SetWindowSize(e.wcfg.Width, e.wcfg.Height)
+	ebiten.SetWindowSizeLimits(1, 1, e.wcfg.Width, e.wcfg.Height)
 
 	e.lastTime = time.Now()
 
