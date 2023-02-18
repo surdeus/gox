@@ -33,6 +33,10 @@ func (e *Engine) Camera() *Camera {
 	return e.camera
 }
 
+func (e *Engine) SetCamera(c *Camera) {
+	e.camera = c
+}
+
 func (e *Engine) Keys() []Key {
 	return e.keys
 }
@@ -50,7 +54,6 @@ func New(
 			Object: &Object{
 				T: Transform{
 					S: Vector{1, 1},
-					RA: Vector{480, 320},
 				},
 			},
 		},
@@ -121,6 +124,7 @@ func (e *engine) Layout(ow, oh int) (int, int) {
 	if e.wcfg.FixedSize {
 		return e.wcfg.Width, e.wcfg.Height
 	}
+
 	return ow, oh
 }
 

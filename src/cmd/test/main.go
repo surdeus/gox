@@ -26,9 +26,8 @@ func NewPlayer() *Player {
 		Sprite: &gx.Sprite{
 			Object: &gx.Object{
 				T: gx.Transform {
-					P: gx.Vector{100, 150},
 					S: gx.Vector{5, 5},
-					RA: gx.Vector{200, 200},
+					RA: gx.Vector{320, 240},
 				},
 			},
 			Image: playerImg,
@@ -36,6 +35,9 @@ func NewPlayer() *Player {
 		MoveSpeed: 90.,
 		ScaleSpeed: .2,
 	}
+}
+
+func (p *Player) Start(e *gx.Engine) {
 }
 
 func (p *Player) Update(e *gx.Engine) error {
@@ -75,6 +77,18 @@ func (p *Player) Update(e *gx.Engine) error {
 			c.Object.T.S.Y -= gx.Pi * p.ScaleSpeed * dt
 		} else {
 			c.Object.T.S.Y += gx.Pi * p.ScaleSpeed * dt
+		}
+	case ebiten.KeyZ :
+		if e.KeyIsPressed(ebiten.KeyShift) {
+			c.Object.T.RA.X -= gx.Pi * p.MoveSpeed * dt
+		} else {
+			c.Object.T.RA.X += gx.Pi * p.MoveSpeed * dt
+		}
+	case ebiten.KeyX :
+		if e.KeyIsPressed(ebiten.KeyShift) {
+			c.Object.T.RA.Y -= gx.Pi * p.MoveSpeed * dt
+		} else {
+			c.Object.T.RA.Y += gx.Pi * p.MoveSpeed * dt
 		}
 	}}
 

@@ -18,7 +18,10 @@ const (
 // position, scale and rotation to apply
 // it to the objects to get the real
 // transform to display on the screen.
-func (c *Camera)Matrix(scale bool) Matrix {
+func (c *Camera)RealMatrix(
+	e *Engine,
+	scale bool,
+) Matrix {
 	g := &Matrix{}
 
 	// For rotating around.
@@ -27,11 +30,15 @@ func (c *Camera)Matrix(scale bool) Matrix {
 		c.Object.T.RA.Y,
 	)
 
-	g.Rotate(c.Object.T.R)
-
 	g.Translate(
 		-c.Object.T.P.X,
 		c.Object.T.P.Y,
+	)
+	g.Rotate(-c.Object.T.R)
+
+	g.Translate(
+		c.Object.T.RA.X,
+		-c.Object.T.RA.Y,
 	)
 
 	if scale {

@@ -15,10 +15,13 @@ func (s *Sprite) Draw(
 	i *Image,
 ) {
 	op := &ebiten.DrawImageOptions{}
-	m := s.Object.T.Matrix()
+	m := s.Object.T.Matrix(e)
 
 	if e.camera != nil {
-		m.Concat(e.camera.Matrix(true))
+		m.Concat(e.camera.RealMatrix(
+			e,
+			true,
+		))
 	}
 
 	op.GeoM = m
