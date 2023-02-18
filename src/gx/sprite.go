@@ -7,6 +7,7 @@ import (
 type Sprite struct {
 	*Object
 	*Image
+	Floating bool
 }
 
 func (s *Sprite) Draw(
@@ -14,8 +15,13 @@ func (s *Sprite) Draw(
 	i *Image,
 ) {
 	op := &ebiten.DrawImageOptions{}
-	op.GeoM = s.Object.T.Matrix()
+	m := s.Object.T.Matrix()
 
+	if e.camera != nil {
+		m.Concat(e.camera.Matrix(true))
+	}
+
+	op.GeoM = m
 	i.DrawImage(s.Image, op)
 }
 

@@ -22,9 +22,14 @@ type Engine struct {
 	behavers []Behaver
 	lastTime time.Time
 	dt Float
+	camera *Camera
 }
 
 type engine Engine
+
+func (e *Engine) Camera() *Camera {
+	return e.camera
+}
 
 func New(
 	cfg *WindowConfig,
@@ -35,6 +40,13 @@ func New(
 			Layer,
 			*[]Drawer,
 		](true),
+		camera: &Camera{
+			Object: &Object{
+				T: Transform{
+					S: Vector{0.1, 1},
+				},
+			},
+		},
 	}
 }
 

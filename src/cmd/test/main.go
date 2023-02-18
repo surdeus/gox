@@ -31,7 +31,10 @@ func NewPlayer() *Player {
 }
 
 func (p *Player) Update(e *gx.Engine) {
-	p.Sprite.Object.T.P.Y += 40 * e.DT()
+	//p.Sprite.Object.T.P.Y += 40 * e.DT()
+	dt := e.DT()
+	c := e.Camera()
+	c.Object.T.P.X += 40 * dt
 }
 
 func main() {
