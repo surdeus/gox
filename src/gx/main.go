@@ -4,6 +4,7 @@ import (
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
 	"github.com/surdeus/godat/src/sparsex"
+	"github.com/surdeus/godat/src/poolx"
 	//"fmt"
 	"time"
 )
@@ -19,8 +20,8 @@ type WindowConfig struct {
 
 type Engine struct {
 	wcfg *WindowConfig
-	layers *sparsex.Sparse[Layer, *[]Drawer]
-	behavers []Behaver
+	layers *sparsex.Sparse[Layer, *poolx.Pool[Drawer]]
+	behavers *poolx.Pool[Behaver]
 	lastTime time.Time
 	dt Float
 	camera *Camera
@@ -48,7 +49,7 @@ func New(
 		wcfg: cfg,
 		layers: sparsex.New[
 			Layer,
-			*[]Drawer,
+			*poolx.Pool[Drawer],
 		](true),
 		camera: &Camera{
 			Object: &Object{
@@ -57,6 +58,7 @@ func New(
 				},
 			},
 		},
+		behavers: poolx.New[Behaver](),
 	}
 }
 
@@ -78,19 +80,20 @@ func (e *Engine) Add(l Layer, b any) {
 func (e *Engine) AddDrawer(l Layer, d Drawer) {
 	g, ok := e.layers.Get(l)
 	if !ok {
+		layer := poolx.New[Drawer]()
 		e.layers.Set(
 			l,
-			&[]Drawer{d},
+			layer,
 		)
+		layer.Append(d)
 	} else {
-		set := append(*g, d)
-		*g = set
+		g.Append(d)
 	}
 
 }
 
 func (e *Engine) AddBehaver(b Behaver) {
-	e.behavers = append(e.behavers, b)
+	e.behavers.Append(b)
 }
 
 func (e *engine) Update() error {
@@ -101,8 +104,8 @@ func (e *engine) Update() error {
 		AppendPressedKeys(e.keys[:0])
 
 	e.dt = time.Since(e.lastTime).Seconds()
-	for _, v := range eng.behavers {
-		err = v.Update(eng)
+	for p := range eng.behavers.Range() {
+		err = p.V.Update(eng)
 		if err != nil {
 			return err
 		}
@@ -115,8 +118,8 @@ func (e *engine) Update() error {
 func (e *engine) Draw(i *ebiten.Image) {
 	eng := (*Engine)(e)
 	for p := range e.layers.Vals() {
-		for _, d := range *p.V {
-			d.Draw(eng, i)
+		for pj := range p.V.Range() {
+			pj.V.Draw(eng, i)
 		}
 	}
 }

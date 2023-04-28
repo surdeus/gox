@@ -8,7 +8,7 @@ require (
 	github.com/hajimehoshi/ebiten/v2 v2.4.16 // indirect
 	github.com/hajimehoshi/file2byteslice v1.0.0 // indirect
 	github.com/jezek/xgb v1.1.0 // indirect
-	github.com/surdeus/godat v0.0.0-20230217130825-eddf2c345cb7 // indirect
+	github.com/surdeus/godat v0.0.0-20230428145139-f51a8ab74bc8 // indirect
 	golang.org/x/exp v0.0.0-20230213192124-5e25df0256eb // indirect
 	golang.org/x/exp/shiny v0.0.0-20230213192124-5e25df0256eb // indirect
 	golang.org/x/image v0.5.0 // indirect
