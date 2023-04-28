@@ -77,6 +77,21 @@ func (e *Engine) Add(l Layer, b any) {
 	}
 }
 
+func (e *Engine) Del(b any) {
+	drawer, ok := b.(Drawer)
+	if ok {
+		for layer := range e.layers.Vals() {
+			layer.V.Del(drawer)
+		}
+	}
+	
+	behaver, ok := b.(Behaver)
+	if ok {
+		e.behavers.Del(behaver)
+	}
+	
+}
+
 func (e *Engine) AddDrawer(l Layer, d Drawer) {
 	g, ok := e.layers.Get(l)
 	if !ok {

@@ -94,6 +94,8 @@ func (p *Player) Update(e *gx.Engine) error {
 			c.Object.T.RA.Y += gx.Pi * p.MoveSpeed * dt
 		}
 		log.Println(c.Object.T.RA.Y)
+	case ebiten.Key0 :
+		e.Del(p)
 	}}
 
 	return nil
