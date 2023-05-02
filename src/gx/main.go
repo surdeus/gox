@@ -12,12 +12,14 @@ import (
 // The type represents order of drawing.
 type Layer int
 
+// Window configuration type.
 type WindowConfig struct {
 	Title string
 	Width, Height int
 	FixedSize bool
 }
 
+// The main structure that represents current state of [game] engine.
 type Engine struct {
 	wcfg *WindowConfig
 	layers *sparsex.Sparse[Layer, *poolx.Pool[Drawer]]
@@ -30,18 +32,22 @@ type Engine struct {
 
 type engine Engine
 
+// Return current camera.
 func (e *Engine) Camera() *Camera {
 	return e.camera
 }
 
+// Set new current camera.
 func (e *Engine) SetCamera(c *Camera) {
 	e.camera = c
 }
 
+// Get currently pressed keys.
 func (e *Engine) Keys() []Key {
 	return e.keys
 }
 
+// Returns new empty Engine.
 func New(
 	cfg *WindowConfig,
 ) *Engine {
@@ -77,6 +83,7 @@ func (e *Engine) Add(l Layer, b any) {
 	}
 }
 
+// Del object from Engine.
 func (e *Engine) Del(b any) {
 	drawer, ok := b.(Drawer)
 	if ok {
