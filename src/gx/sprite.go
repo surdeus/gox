@@ -5,8 +5,8 @@ import (
 )
 
 type Sprite struct {
-	*Object
-	*Image
+	I *Image
+	T Transform
 	Floating bool
 }
 
@@ -17,7 +17,7 @@ func (s *Sprite) Draw(
 	op := &ebiten.DrawImageOptions{}
 	m := &Matrix{}
 
-	m.Concat(s.Object.T.Matrix(e))
+	m.Concat(s.T.Matrix(e))
 	if e.camera != nil {
 		m.Concat(e.camera.RealMatrix(
 			e,
@@ -26,6 +26,6 @@ func (s *Sprite) Draw(
 	}
 
 	op.GeoM = *m
-	i.DrawImage(s.Image, op)
+	i.DrawImage(s.I, op)
 }
 

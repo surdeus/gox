@@ -17,6 +17,7 @@ type WindowConfig struct {
 	Title string
 	Width, Height int
 	FixedSize bool
+	VSync bool
 }
 
 // The main structure that represents current state of [game] engine.
@@ -58,10 +59,8 @@ func New(
 			*poolx.Pool[Drawer],
 		](true),
 		camera: &Camera{
-			Object: &Object{
-				T: Transform{
+			T: Transform{
 					S: Vector{1, 1},
-				},
 			},
 		},
 		behavers: poolx.New[Behaver](),
@@ -74,7 +73,6 @@ func (e *Engine) Add(l Layer, b any) {
 	beh, ok := b.(Behaver)
 	if ok {
 		e.AddBehaver(beh)
-		beh.Start(e)
 	}
 
 	drw, ok := b.(Drawer)
@@ -116,6 +114,7 @@ func (e *Engine) AddDrawer(l Layer, d Drawer) {
 
 func (e *Engine) AddBehaver(b Behaver) {
 	e.behavers.Append(b)
+	b.Start(e)
 }
 
 func (e *engine) Update() error {
@@ -163,9 +162,10 @@ func (e *Engine) Run() error {
 	ebiten.SetWindowTitle(e.wcfg.Title)
 	ebiten.SetWindowSize(e.wcfg.Width, e.wcfg.Height)
 	ebiten.SetWindowSizeLimits(1, 1, e.wcfg.Width, e.wcfg.Height)
+	
+	ebiten.SetVsyncEnabled(e.wcfg.VSync)
 
 	e.lastTime = time.Now()
-
 	return ebiten.RunGame((*engine)(e))
 }
 

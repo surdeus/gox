@@ -1,22 +1,23 @@
 package gx
 
-type Behaver interface {
+// Implementing the interface type
+// will call the function OnStart
+// when first appear on scene BEFORE
+// the OnUpdate.
+type Starter interface {
 	Start(*Engine)
+}
+
+// Implementing the interface type
+// will call the function on each
+// engine iteration.
+type Updater interface {
 	Update(*Engine) error
 }
 
-// The object type represents
-// basic information for interaction
-// with the engine.
-type Object struct {
-	T Transform
-}
-
-func (o *Object) Start(e *Engine) {}
-func (o *Object) Update(e *Engine) error {
-	return nil
-}
-func (o *Object) GetObject() *Object {
-	return o
+// The general interface for 
+type Behaver interface {
+	Starter
+	Updater
 }
 

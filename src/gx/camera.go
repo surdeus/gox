@@ -7,7 +7,7 @@ import (
 // Implements the camera component
 // for the main window.
 type Camera struct {
-	*Object
+	T Transform
 }
 
 const (
@@ -18,6 +18,8 @@ const (
 // position, scale and rotation to apply
 // it to the objects to get the real
 // transform to display on the screen.
+// (Should implement buffering it so we do not
+//  need to calculate it each time for each object. )
 func (c *Camera)RealMatrix(
 	e *Engine,
 	scale bool,
@@ -27,20 +29,20 @@ func (c *Camera)RealMatrix(
 
 	if scale {
 		g.Scale(
-			c.Object.T.S.X,
-			c.Object.T.S.Y,
+			c.T.S.X,
+			c.T.S.Y,
 		)
 	}
 
 	g.Translate(
-		-c.Object.T.P.X,
-		c.Object.T.P.Y,
+		-c.T.P.X,
+		c.T.P.Y,
 	)
-	g.Rotate(-c.Object.T.R)
+	g.Rotate(-c.T.R)
 
 	g.Translate(
-		c.Object.T.RA.X,
-		-c.Object.T.RA.Y,
+		c.T.RA.X,
+		-c.T.RA.Y,
 	)
 
 	return *g

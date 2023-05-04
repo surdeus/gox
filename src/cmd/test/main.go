@@ -24,13 +24,11 @@ var (
 func NewPlayer() *Player {
 	return &Player{
 		Sprite: &gx.Sprite{
-			Object: &gx.Object{
-				T: gx.Transform {
-					S: gx.Vector{5, 5},
-					RA: gx.Vector{320, 240},
-				},
+			T: gx.Transform {
+				S: gx.Vector{5, 5},
+				RA: gx.Vector{320, 240},
 			},
-			Image: playerImg,
+			I: playerImg,
 		},
 		MoveSpeed: 90.,
 		ScaleSpeed: .2,
@@ -39,7 +37,7 @@ func NewPlayer() *Player {
 
 func (p *Player) Start(e *gx.Engine) {
 	c := e.Camera()
-	c.Object.T.RA = gx.V(360, -240)
+	c.T.RA = gx.V(360, -240)
 }
 
 func (p *Player) Update(e *gx.Engine) error {
@@ -49,51 +47,51 @@ func (p *Player) Update(e *gx.Engine) error {
 
 	for _, v := range keys {switch v {
 	case ebiten.KeyArrowUp :
-		c.Object.T.P.Y += p.MoveSpeed * dt
+		c.T.P.Y += p.MoveSpeed * dt
 	case ebiten.KeyArrowLeft :
-		c.Object.T.P.X -= p.MoveSpeed * dt
+		c.T.P.X -= p.MoveSpeed * dt
 	case ebiten.KeyArrowDown :
-		c.Object.T.P.Y -= p.MoveSpeed * dt
+		c.T.P.Y -= p.MoveSpeed * dt
 	case ebiten.KeyArrowRight :
-		c.Object.T.P.X += p.MoveSpeed * dt
+		c.T.P.X += p.MoveSpeed * dt
 	case ebiten.KeyW :
-		p.Object.T.P.Y += p.MoveSpeed * dt
+		p.T.P.Y += p.MoveSpeed * dt
 	case ebiten.KeyA :
-		p.Object.T.P.X -= p.MoveSpeed * dt
+		p.T.P.X -= p.MoveSpeed * dt
 	case ebiten.KeyS :
-		p.Object.T.P.Y -= p.MoveSpeed * dt
+		p.T.P.Y -= p.MoveSpeed * dt
 	case ebiten.KeyD :
-		p.Object.T.P.X += p.MoveSpeed * dt
+		p.T.P.X += p.MoveSpeed * dt
 	case ebiten.KeyR :
-		c.Object.T.R += gx.Pi * p.ScaleSpeed * dt
+		c.T.R += gx.Pi * p.ScaleSpeed * dt
 	case ebiten.KeyT :
-		c.Object.T.R -= gx.Pi * p.ScaleSpeed * dt
+		c.T.R -= gx.Pi * p.ScaleSpeed * dt
 	case ebiten.KeyF :
 		if e.KeyIsPressed(ebiten.KeyShift) {
-			c.Object.T.S.X -= gx.Pi * p.ScaleSpeed * dt
+			c.T.S.X -= gx.Pi * p.ScaleSpeed * dt
 		} else {
-			c.Object.T.S.X += gx.Pi * p.ScaleSpeed * dt
+			c.T.S.X += gx.Pi * p.ScaleSpeed * dt
 		}
 	case ebiten.KeyG :
 		if e.KeyIsPressed(ebiten.KeyShift) {
-			c.Object.T.S.Y -= gx.Pi * p.ScaleSpeed * dt
+			c.T.S.Y -= gx.Pi * p.ScaleSpeed * dt
 		} else {
-			c.Object.T.S.Y += gx.Pi * p.ScaleSpeed * dt
+			c.T.S.Y += gx.Pi * p.ScaleSpeed * dt
 		}
 	case ebiten.KeyZ :
 		if e.KeyIsPressed(ebiten.KeyShift) {
-			c.Object.T.RA.X -= gx.Pi * p.MoveSpeed * dt
+			c.T.RA.X -= gx.Pi * p.MoveSpeed * dt
 		} else {
-			c.Object.T.RA.X += gx.Pi * p.MoveSpeed * dt
+			c.T.RA.X += gx.Pi * p.MoveSpeed * dt
 		}
-		log.Println(c.Object.T.RA.X)
+		log.Println(c.T.RA.X)
 	case ebiten.KeyX :
 		if e.KeyIsPressed(ebiten.KeyShift) {
-			c.Object.T.RA.Y -= gx.Pi * p.MoveSpeed * dt
+			c.T.RA.Y -= gx.Pi * p.MoveSpeed * dt
 		} else {
-			c.Object.T.RA.Y += gx.Pi * p.MoveSpeed * dt
+			c.T.RA.Y += gx.Pi * p.MoveSpeed * dt
 		}
-		log.Println(c.Object.T.RA.Y)
+		log.Println(c.T.RA.Y)
 	case ebiten.Key0 :
 		e.Del(p)
 	}}
@@ -117,6 +115,7 @@ func main() {
 		Title: "Test title",
 		Width: 720,
 		Height: 480,
+		VSync: true,
 	})
 
 	var err error
