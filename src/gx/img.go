@@ -8,8 +8,6 @@ import (
 )
 
 type Image = ebiten.Image
-type Rectangle = image.Rectangle
-type Point = image.Point
 
 // The interface describes anything that can be
 // drawn. It will be drew corresponding to

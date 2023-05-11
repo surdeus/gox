@@ -9,6 +9,10 @@ import (
 	"time"
 )
 
+// The type is used in all Engine interactions
+// where you need floating values.
+type Float = float64
+
 // The type represents order of drawing.
 type Layer int
 
