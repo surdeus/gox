@@ -1,7 +1,4 @@
 package gx
 
-type LineSegment struct {
-	P Point
-	V Vector
-}
+type LineSegment [2]Point
 

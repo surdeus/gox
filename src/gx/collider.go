@@ -7,19 +7,19 @@ package gx
 // contain more complicated structure
 // do collide.
 type ColliderSimplifier interface {
-	ColliderSimplify() Rect
+	ColliderSimplify() Triangle
 }
 
 // The structure represents all
-// information on collision.
+// information on collisions.
 type Collision struct {
-	Other Collider
+	Current, With any
 }
 
-// Every collider has to implement
-// collision with every other type of collider
-// for optimization. Not good for custom colliders
-// but is fast.
+// Implementing the interface lets the engine
+// to determine if the object collides with anything.
+// Mostly will use the Collide function with some
+// inner structure field as first argument.
 type Collider interface {
 	Collides(Collider) *Collision
 }
@@ -29,4 +29,17 @@ type Collider interface {
 type CollideEventer interface {
 	Collide(*Collision)
 }
+
+// Single function for all collision to remove 
+// functionality duplicating from the archtecture.
+// Returns the collision if there is and nil if there
+// is no collision.
+/*func Collide(c1, c2 any) bool {
+}
+
+func triangleCollidesPoint(t Triangle, p Point) *Collision {
+}
+
+func triangleCollidesTriangle(t1, t2 Triangle) *Collision
+*/
 

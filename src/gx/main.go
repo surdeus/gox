@@ -7,6 +7,7 @@ import (
 	"github.com/surdeus/godat/src/poolx"
 	//"fmt"
 	"time"
+	"math"
 )
 
 // The type is used in all Engine interactions
@@ -36,6 +37,10 @@ type Engine struct {
 }
 
 type engine Engine
+
+var (
+	Infinity = math.MaxFloat64
+)
 
 // Return current camera.
 func (e *Engine) Camera() *Camera {
@@ -76,12 +81,12 @@ func New(
 func (e *Engine) Add(l Layer, b any) {
 	beh, ok := b.(Behaver)
 	if ok {
-		e.AddBehaver(beh)
+		e.addBehaver(beh)
 	}
 
 	drw, ok := b.(Drawer)
 	if ok {
-		e.AddDrawer(l, drw)
+		e.addDrawer(l, drw)
 	}
 }
 
@@ -101,7 +106,7 @@ func (e *Engine) Del(b any) {
 	
 }
 
-func (e *Engine) AddDrawer(l Layer, d Drawer) {
+func (e *Engine) addDrawer(l Layer, d Drawer) {
 	g, ok := e.layers.Get(l)
 	if !ok {
 		layer := poolx.New[Drawer]()
@@ -116,7 +121,7 @@ func (e *Engine) AddDrawer(l Layer, d Drawer) {
 
 }
 
-func (e *Engine) AddBehaver(b Behaver) {
+func (e *Engine) addBehaver(b Behaver) {
 	e.behavers.Append(b)
 	b.Start(e)
 }
