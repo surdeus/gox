@@ -49,7 +49,7 @@ func (r Rectangle) Draw(
 	e *Engine,
 	i *Image,
 ) {
-	fmt.Println("drawing the rectangle")
+	fmt.Println("drawing the rectangle:", r)
 	if r.S == nil {
 		img := NewImage(1, 1)
 		img.Set(0, 0, r.C)
@@ -58,7 +58,9 @@ func (r Rectangle) Draw(
 		t.S.X *= r.W
 		t.S.Y *= r.H
 		
+		rm := e.Camera().RealMatrix(e, true)
 		m := t.Matrix(e)
+		m.Concat(rm)
 		opts := &ebiten.DrawImageOptions{
 			GeoM: m,
 		}

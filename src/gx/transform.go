@@ -14,7 +14,9 @@ type Transform struct {
 
 // Returns empty Transform.
 func T() Transform {
-	ret := Transform{}
+	ret := Transform{
+		S: Vector{1, 1},
+	}
 	return ret
 }
 

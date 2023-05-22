@@ -127,9 +127,9 @@ func main() {
 
 	e.Add(0, NewPlayer())
 	e.Add(1, &Debug{})
-	e.Add(100, gx.Rectangle{
-		W: 10000000,
-		H: 10000000,
+	e.Add(-1, gx.Rectangle{
+		W: 100,
+		H: 100,
 		T: gx.T(),
 		C: gx.Color{
 			gx.MaxColorV,
