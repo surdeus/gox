@@ -60,18 +60,18 @@ func (r DrawableRectangle) Draw(
 	e *Engine,
 	i *Image,
 ) {
+	t := r.T
+	t.S.X *= r.W
+	t.S.Y *= r.H
+	
+	rm := e.Camera().RealMatrix(e, true)
+	m := t.Matrix(e)
+	m.Concat(rm)
 	// Draw solid color if no shader.
 	if r.Shader == nil {
 		img := NewImage(1, 1)
 		img.Set(0, 0, r.Color)
 		
-		t := r.T
-		t.S.X *= r.W
-		t.S.Y *= r.H
-		
-		rm := e.Camera().RealMatrix(e, true)
-		m := t.Matrix(e)
-		m.Concat(rm)
 		opts := &ebiten.DrawImageOptions{
 			GeoM: m,
 		}
@@ -80,7 +80,7 @@ func (r DrawableRectangle) Draw(
 	}
 	
 	opts := &ebiten.DrawRectShaderOptions{
-		GeoM: r.T.Matrix(e),
+		GeoM: m,
 		Images: [4]*Image{
 			NewImage(1, 1),
 			nil,
@@ -92,6 +92,6 @@ func (r DrawableRectangle) Draw(
 	//w := int(r.W * r.T.S.X)
 	//h := int(r.H * r.T.S.Y)
 	
-	i.DrawRectShader(1000, 1000, r.Shader, opts)
+	i.DrawRectShader(1, 1, r.Shader, opts)
 }
 
