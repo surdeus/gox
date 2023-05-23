@@ -79,10 +79,11 @@ func (r DrawableRectangle) Draw(
 		return
 	}
 	
+	v := 1
 	opts := &ebiten.DrawRectShaderOptions{
 		GeoM: m,
 		Images: [4]*Image{
-			NewImage(1, 1),
+			NewImage(v, v),
 			nil,
 			nil,
 			nil,
@@ -92,6 +93,6 @@ func (r DrawableRectangle) Draw(
 	//w := int(r.W * r.T.S.X)
 	//h := int(r.H * r.T.S.Y)
 	
-	i.DrawRectShader(1, 1, r.Shader, opts)
+	i.DrawRectShader(v, v, r.Shader, opts)
 }
 

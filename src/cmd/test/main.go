@@ -143,7 +143,7 @@ func main() {
 			gx.MaxColorV,
 		},
 		Visible: true,
-		//Shader: gx.SolidWhiteColorShader,
+		Shader: gx.SolidWhiteColorShader,
 	})
 	e.Run()
 }
