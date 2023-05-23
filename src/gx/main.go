@@ -149,6 +149,9 @@ func (e *engine) Draw(i *ebiten.Image) {
 	eng := (*Engine)(e)
 	for p := range e.layers.Vals() {
 		for pj := range p.V.Range() {
+			if !pj.V.IsVisible() {
+				continue
+			}
 			pj.V.Draw(eng, i)
 		}
 	}

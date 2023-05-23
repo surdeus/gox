@@ -29,6 +29,7 @@ func NewPlayer() *Player {
 				RA: gx.Vector{320, 240},
 			},
 			I: playerImg,
+			Visible: true,
 		},
 		MoveSpeed: 90.,
 		ScaleSpeed: .2,
@@ -110,6 +111,8 @@ func (d *Debug) Draw(
 	e.DebugPrint(i, strings.Join(keyStrs, ", "))
 }
 
+func (d *Debug) IsVisible() bool {return true}
+
 func main() {
 	e := gx.New(&gx.WindowConfig{
 		Title: "Test title",
@@ -127,16 +130,19 @@ func main() {
 
 	e.Add(0, NewPlayer())
 	e.Add(1, &Debug{})
-	e.Add(-1, gx.Rectangle{
-		W: 100,
-		H: 100,
-		T: gx.T(),
-		C: gx.Color{
+	e.Add(-1, gx.DrawableRectangle{
+		Rectangle: gx.Rectangle{
+			W: 100,
+			H: 100,
+			T: gx.T(),
+		},
+		Color: gx.Color{
 			gx.MaxColorV,
-			gx.MaxColorV,
-			gx.MaxColorV,
+			0,
+			0,
 			gx.MaxColorV,
 		},
+		Visible: true,
 	})
 	e.Run()
 }

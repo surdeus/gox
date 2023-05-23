@@ -8,7 +8,7 @@ type Sprite struct {
 	I *Image
 	T Transform
 	S *Shader
-	Floating bool
+	Floating, Visible bool
 }
 
 func (s *Sprite) Draw(
@@ -34,5 +34,9 @@ func (s *Sprite) Draw(
 	} */
 	
 	i.DrawImage(s.I, op)
+}
+
+func (s *Sprite) IsVisible() bool {
+	return s.Visible
 }
 

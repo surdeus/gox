@@ -3,7 +3,7 @@ package gx
 import (
 	"github.com/hajimehoshi/ebiten/v2"
 	//"github.com/hajimehoshi/ebiten/v2/vector"
-	"fmt"
+	//"fmt"
 	//"image"
 )
 
@@ -18,8 +18,15 @@ type Rectangle struct {
 	// relation of width and height.
 	// Change transform to actually change things.
 	W, H Float
-	S *Shader
-	C Color
+	
+}
+
+// The type describes rectangle that can be drawn.
+type DrawableRectangle struct {
+	Rectangle
+	Shader *Shader
+	Color Color
+	Visible bool
 }
 
 // Return points of corners of the rectangle.
@@ -45,14 +52,18 @@ func NewImage(w, h int) (*Image) {
 	return ebiten.NewImage(w, h)
 }
 
-func (r Rectangle) Draw(
+func (r DrawableRectangle) IsVisible() bool {
+	return r.Visible
+}
+
+func (r DrawableRectangle) Draw(
 	e *Engine,
 	i *Image,
 ) {
-	fmt.Println("drawing the rectangle:", r)
-	if r.S == nil {
+	// Draw solid color if no shader.
+	if r.Shader == nil {
 		img := NewImage(1, 1)
-		img.Set(0, 0, r.C)
+		img.Set(0, 0, r.Color)
 		
 		t := r.T
 		t.S.X *= r.W
@@ -65,13 +76,13 @@ func (r Rectangle) Draw(
 			GeoM: m,
 		}
 		i.DrawImage(img, opts)
-		fmt.Println("done")
 		return
 	}
+	
 	opts := &ebiten.DrawRectShaderOptions{
 		GeoM: r.T.Matrix(e),
 		Images: [4]*Image{
-			NewImage(1000, 1000),
+			NewImage(1, 1),
 			nil,
 			nil,
 			nil,
@@ -81,6 +92,6 @@ func (r Rectangle) Draw(
 	//w := int(r.W * r.T.S.X)
 	//h := int(r.H * r.T.S.Y)
 	
-	i.DrawRectShader(1000, 1000, r.S, opts)
+	i.DrawRectShader(1000, 1000, r.Shader, opts)
 }
 
