@@ -6,6 +6,10 @@ import (
 )
 
 type Shader = ebiten.Shader
+type ShaderOptions struct {
+	Uniforms map[string] any
+	Images [4]*Image
+}
 
 var (
 	// The shader is for example only.
@@ -15,14 +19,14 @@ var (
 		func Fragment(position vec4, texCoord vec2, color vec4) vec4 {
 			//ts := imageSrcTextureSize()
 			
-			_, size := imageSrcRegionOnTexture()
+			//_, size := imageSrcRegionOnTexture()
 			/*return vec4(
 				position.y/size.y,
 				position.y/size.y,
 				position.y/size.y,
 				position.y/size.y,
 			)*/
-			py := int(position.y / size.y) % 5
+			/*py := int(position.y / size.y) % 5
 			px := int(position.x / size.x) % 5
 			if py >= 1 && px >= 1 {
 				return vec4(
@@ -31,14 +35,16 @@ var (
 					0,
 					1,
 				)
-			}
+			}*/
 			
-			return vec4(
+			ret := vec4(
 				0,
-				1,
-				0,
+				sin(position.x),
+				sin(position.y),
 				1,
 			)
+			
+			return imageSrc0UnsafeAt(texCoord) * (ret)
 		}
 	`))
 )

@@ -132,8 +132,8 @@ func main() {
 	e.Add(1, &Debug{})
 	e.Add(-1, gx.DrawableRectangle{
 		Rectangle: gx.Rectangle{
-			W: 100,
-			H: 100,
+			W: 4,
+			H: 4,
 			T: gx.T(),
 		},
 		Color: gx.Color{
@@ -144,6 +144,14 @@ func main() {
 		},
 		Visible: true,
 		Shader: gx.SolidWhiteColorShader,
+		Options: gx.ShaderOptions{
+			Images: [4]*gx.Image{
+				playerImg,
+				nil,
+				nil,
+				nil,
+			},
+		},
 	})
 	e.Run()
 }

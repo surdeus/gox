@@ -14,9 +14,6 @@ type Rectangle struct {
 	// rotate around(relatively of position, not absolute).
 	T Transform
 	// Width and height.
-	// In fact are needed only to specify
-	// relation of width and height.
-	// Change transform to actually change things.
 	W, H Float
 	
 }
@@ -24,8 +21,15 @@ type Rectangle struct {
 // The type describes rectangle that can be drawn.
 type DrawableRectangle struct {
 	Rectangle
+	
 	Shader *Shader
+	// Solid color of the rectangle.
+	// Will be ignored if the Shader
+	// field is not nil.
 	Color Color
+	
+	Options ShaderOptions
+	
 	Visible bool
 }
 
@@ -67,11 +71,11 @@ func (r DrawableRectangle) Draw(
 	rm := e.Camera().RealMatrix(e, true)
 	m := t.Matrix(e)
 	m.Concat(rm)
+	
 	// Draw solid color if no shader.
 	if r.Shader == nil {
 		img := NewImage(1, 1)
 		img.Set(0, 0, r.Color)
-		
 		opts := &ebiten.DrawImageOptions{
 			GeoM: m,
 		}
@@ -79,20 +83,20 @@ func (r DrawableRectangle) Draw(
 		return
 	}
 	
-	v := 1
+	// Use the Color as base image if no is provided.
+	if r.Options.Images[0] == nil {
+		r.Options.Images[0] = NewImage(1, 1)
+		r.Options.Images[0].Set(0, 0, r.Color)
+	} 
+	
+	// Drawing with shader.
 	opts := &ebiten.DrawRectShaderOptions{
 		GeoM: m,
-		Images: [4]*Image{
-			NewImage(v, v),
-			nil,
-			nil,
-			nil,
-		},
+		Images: r.Options.Images,
+		Uniforms: r.Options.Uniforms,
 	}
 	
-	//w := int(r.W * r.T.S.X)
-	//h := int(r.H * r.T.S.Y)
-	
-	i.DrawRectShader(v, v, r.Shader, opts)
+	w, h := r.Options.Images[0].Size()
+	i.DrawRectShader(w, h, r.Shader, opts)
 }
 
