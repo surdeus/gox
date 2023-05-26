@@ -20,8 +20,12 @@ type Layer int
 // Window configuration type.
 type WindowConfig struct {
 	Title string
-	Width, Height int
-	FixedSize bool
+	
+	Width,
+	Height int
+	
+	FixedSize,
+	Fullscreen,
 	VSync bool
 }
 
@@ -29,7 +33,7 @@ type WindowConfig struct {
 type Engine struct {
 	wcfg *WindowConfig
 	layers *sparsex.Sparse[Layer, *poolx.Pool[Drawer]]
-	behavers *poolx.Pool[Behaver]
+	updaters *poolx.Pool[Updater]
 	lastTime time.Time
 	dt Float
 	camera *Camera
@@ -72,26 +76,36 @@ func New(
 					S: Vector{1, 1},
 			},
 		},
-		behavers: poolx.New[Behaver](),
+		updaters: poolx.New[Updater](),
 	}
 }
 
 // Add new object considering what
 // interfaces it implements.
 func (e *Engine) Add(l Layer, b any) {
-	beh, ok := b.(Behaver)
+	starter, ok := b.(Starter)
 	if ok {
-		e.addBehaver(beh)
+		starter.Start(e)
+	}
+	
+	updater, ok := b.(Updater)
+	if ok {
+		e.addUpdater(updater)
 	}
 
-	drw, ok := b.(Drawer)
+	drawer, ok := b.(Drawer)
 	if ok {
-		e.addDrawer(l, drw)
+		e.addDrawer(l, drawer)
 	}
 }
 
-// Del object from Engine.
-func (e *Engine) Del(b any) {
+// Delete object from Engine.
+func (e *Engine) Del(b any, v ...any) {
+	deleter, ok := b.(Deleter)
+	if ok {
+		deleter.Delete(e, v...)
+	}
+	
 	drawer, ok := b.(Drawer)
 	if ok {
 		for layer := range e.layers.Vals() {
@@ -99,9 +113,9 @@ func (e *Engine) Del(b any) {
 		}
 	}
 	
-	behaver, ok := b.(Behaver)
+	updater, ok := b.(Updater)
 	if ok {
-		e.behavers.Del(behaver)
+		e.updaters.Del(updater)
 	}
 	
 }
@@ -121,9 +135,8 @@ func (e *Engine) addDrawer(l Layer, d Drawer) {
 
 }
 
-func (e *Engine) addBehaver(b Behaver) {
-	e.behavers.Append(b)
-	b.Start(e)
+func (e *Engine) addUpdater(b Updater) {
+	e.updaters.Append(b)
 }
 
 func (e *engine) Update() error {
@@ -134,7 +147,7 @@ func (e *engine) Update() error {
 		AppendPressedKeys(e.keys[:0])
 
 	e.dt = time.Since(e.lastTime).Seconds()
-	for p := range eng.behavers.Range() {
+	for p := range eng.updaters.Range() {
 		err = p.V.Update(eng)
 		if err != nil {
 			return err

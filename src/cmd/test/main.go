@@ -7,6 +7,7 @@ import (
 	"bytes"
 	"log"
 	"strings"
+	"fmt"
 )
 
 type Player struct {
@@ -17,26 +18,65 @@ type Player struct {
 
 type Debug struct{}
 
+type Rect struct {
+	*gx.DrawableRectangle
+}
+
+func NewRect() *Rect {
+	return &Rect{&gx.DrawableRectangle{
+			Rectangle: gx.Rectangle{
+				W: 200,
+				H: 400,
+				T: gx.T(),
+			},
+			Color: gx.Color{
+				gx.MaxColorV,
+				0,
+				0,
+				gx.MaxColorV,
+			},
+			Visible: true,
+			/*Shader: gx.SolidWhiteColorShader,
+			Options: gx.ShaderOptions{
+				Images: [4]*gx.Image{
+					playerImg,
+					nil,
+					nil,
+					nil,
+				},
+			},*/
+	}}
+}
+
+func (r *Rect) Update(e *gx.Engine) error {
+	return nil
+}
+
 var (
 	playerImg *gx.Image
 )
 
 func NewPlayer() *Player {
-	return &Player{
+	ret := &Player{
 		Sprite: &gx.Sprite{
 			T: gx.Transform {
 				S: gx.Vector{5, 5},
 				RA: gx.Vector{320, 240},
 			},
-			I: playerImg,
 			Visible: true,
+			Shader: gx.SolidWhiteColorShader,
 		},
 		MoveSpeed: 90.,
 		ScaleSpeed: .2,
 	}
+	
+	ret.Images[0] = playerImg
+	
+	return ret
 }
 
-func (p *Player) Start(e *gx.Engine) {
+func (p *Player) Start(e *gx.Engine, v ...any) {
+	fmt.Println("starting")
 	c := e.Camera()
 	c.T.RA = gx.V(360, -240)
 }
@@ -130,28 +170,6 @@ func main() {
 
 	e.Add(0, NewPlayer())
 	e.Add(1, &Debug{})
-	e.Add(-1, gx.DrawableRectangle{
-		Rectangle: gx.Rectangle{
-			W: 4,
-			H: 4,
-			T: gx.T(),
-		},
-		Color: gx.Color{
-			gx.MaxColorV,
-			0,
-			0,
-			gx.MaxColorV,
-		},
-		Visible: true,
-		Shader: gx.SolidWhiteColorShader,
-		Options: gx.ShaderOptions{
-			Images: [4]*gx.Image{
-				playerImg,
-				nil,
-				nil,
-				nil,
-			},
-		},
-	})
+	e.Add(-1, NewRect())
 	e.Run()
 }

@@ -5,9 +5,10 @@ import (
 )
 
 type Sprite struct {
-	I *Image
 	T Transform
-	S *Shader
+	Shader *Shader
+	Images [4]*Image
+	Uniforms map[string] any
 	Floating, Visible bool
 }
 
@@ -15,25 +16,37 @@ func (s *Sprite) Draw(
 	e *Engine,
 	i *Image,
 ) {
-	op := &ebiten.DrawImageOptions{
-		
+	// Nothing to draw.
+	if s.Images[0] == nil {
+		return
 	}
+	
 	m := &Matrix{}
 
 	m.Concat(s.T.Matrix(e))
-	if e.camera != nil {
-		m.Concat(e.camera.RealMatrix(
+	if !s.Floating {
+		m.Concat(e.Camera().RealMatrix(
 			e,
 			true,
 		))
 	}
 
-	op.GeoM = *m
-	/*if s.S != nil {
-		bufImg := ebiten.NewImageFromImage(s.I)
-	} */
+	// Drawing without shader.
+	if s.Shader == nil {
+		opts := &ebiten.DrawImageOptions{}
+		opts.GeoM = *m
+		i.DrawImage(s.Images[0], opts)
+		return
+	}
 	
-	i.DrawImage(s.I, op)
+	// Drawing with shader.
+	w, h := s.Images[0].Size()
+	opts := &ebiten.DrawRectShaderOptions{
+		Images: s.Images,
+		Uniforms: s.Uniforms,
+		GeoM: *m,
+	}
+	i.DrawRectShader(w, h, s.Shader, opts)
 }
 
 func (s *Sprite) IsVisible() bool {

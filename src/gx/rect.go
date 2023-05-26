@@ -22,14 +22,19 @@ type Rectangle struct {
 type DrawableRectangle struct {
 	Rectangle
 	
-	Shader *Shader
 	// Solid color of the rectangle.
 	// Will be ignored if the Shader
 	// field is not nil.
 	Color Color
 	
-	Options ShaderOptions
+	// Shader to be applied
+	Shader *Shader
+	// Shader variables.
+	Uniforms map[string] any
+	// Shader images
+	Images [4]*Image
 	
+	// Should be draw or not.
 	Visible bool
 }
 
@@ -56,26 +61,29 @@ func NewImage(w, h int) (*Image) {
 	return ebiten.NewImage(w, h)
 }
 
-func (r DrawableRectangle) IsVisible() bool {
+func (r *DrawableRectangle) IsVisible() bool {
 	return r.Visible
 }
 
-func (r DrawableRectangle) Draw(
+func (r *DrawableRectangle) Draw(
 	e *Engine,
 	i *Image,
 ) {
 	t := r.T
-	t.S.X *= r.W
-	t.S.Y *= r.H
-	
-	rm := e.Camera().RealMatrix(e, true)
-	m := t.Matrix(e)
-	m.Concat(rm)
 	
 	// Draw solid color if no shader.
 	if r.Shader == nil {
 		img := NewImage(1, 1)
 		img.Set(0, 0, r.Color)
+		
+		t.S.X *= r.W
+		t.S.Y *= r.H
+		
+		m := t.Matrix(e)
+		rm := e.Camera().RealMatrix(e, true)
+		
+		m.Concat(rm)
+		
 		opts := &ebiten.DrawImageOptions{
 			GeoM: m,
 		}
@@ -83,20 +91,35 @@ func (r DrawableRectangle) Draw(
 		return
 	}
 	
+	
 	// Use the Color as base image if no is provided.
-	if r.Options.Images[0] == nil {
-		r.Options.Images[0] = NewImage(1, 1)
-		r.Options.Images[0].Set(0, 0, r.Color)
+	var did bool
+	if r.Images[0] == nil {
+		r.Images[0] = NewImage(1, 1)
+		r.Images[0].Set(0, 0, r.Color)
+		did = true
 	} 
+	
+	w, h := r.Images[0].Size()
+	if !did {
+		t.S.X /= Float(w)
+		t.S.Y /= Float(h)
+		
+		t.S.X *= r.W
+		t.S.Y *= r.H
+	}
+	
+	
+	rm := e.Camera().RealMatrix(e, true)
+	m := t.Matrix(e)
+	m.Concat(rm)
 	
 	// Drawing with shader.
 	opts := &ebiten.DrawRectShaderOptions{
 		GeoM: m,
-		Images: r.Options.Images,
-		Uniforms: r.Options.Uniforms,
+		Images: r.Images,
+		Uniforms: r.Uniforms,
 	}
-	
-	w, h := r.Options.Images[0].Size()
 	i.DrawRectShader(w, h, r.Shader, opts)
 }
 

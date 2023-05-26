@@ -4,8 +4,9 @@ package gx
 // will call the function OnStart
 // when first appear on scene BEFORE
 // the OnUpdate.
+// The v value will be get from Add function.
 type Starter interface {
-	Start(*Engine)
+	Start(*Engine, ...any)
 }
 
 // Implementing the interface type
@@ -15,9 +16,10 @@ type Updater interface {
 	Update(*Engine) error
 }
 
-// The general interface for 
-type Behaver interface {
-	Starter
-	Updater
+// Implementing the interface type
+// will call the function on deleting
+// the object.
+type Deleter interface {
+	Delete(*Engine, ...any)
 }
 
