@@ -8,6 +8,7 @@ import (
 	"log"
 	"strings"
 	"fmt"
+	"math/rand"
 )
 
 type Player struct {
@@ -65,6 +66,7 @@ func NewPlayer() *Player {
 			},
 			Visible: true,
 			Shader: gx.SolidWhiteColorShader,
+			Uniforms: make(map[string] any),
 		},
 		MoveSpeed: 90.,
 		ScaleSpeed: .2,
@@ -85,7 +87,8 @@ func (p *Player) Update(e *gx.Engine) error {
 	dt := e.DT()
 	c := e.Camera()
 	keys := e.Keys()
-
+	
+	p.Uniforms["Random"] = any(rand.Float32())
 	for _, v := range keys {switch v {
 	case ebiten.KeyArrowUp :
 		c.T.P.Y += p.MoveSpeed * dt

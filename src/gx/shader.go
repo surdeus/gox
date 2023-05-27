@@ -7,6 +7,7 @@ import (
 
 type Shader = ebiten.Shader
 type ShaderOptions struct {
+	Shader *Shader
 	Uniforms map[string] any
 	Images [4]*Image
 }
@@ -15,6 +16,8 @@ var (
 	// The shader is for example only.
 	SolidWhiteColorShader = MustNewShader([]byte(`
 		package main
+		
+		var Random float
 		
 		func Fragment(position vec4, texCoord vec2, color vec4) vec4 {
 			//ts := imageSrcTextureSize()
@@ -37,14 +40,16 @@ var (
 				)
 			}*/
 			
-			ret := vec4(
+			/*ret := vec4(
 				0,
 				sin(position.x),
 				sin(position.y),
 				1,
 			)
 			
-			return imageSrc0UnsafeAt(texCoord) * (ret)
+			return imageSrc0UnsafeAt(texCoord) * (ret)*/
+			return imageSrc0UnsafeAt(texCoord) * 
+				vec4(1, 1, Random, Random)
 		}
 	`))
 )
