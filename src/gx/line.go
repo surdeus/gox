@@ -31,12 +31,17 @@ func (l Line) Line() Line {
 	return l
 }
 
-func (l Line) Crosses(with Liner) (Point, bool) {
-	// Parallel liners cannot cross by definition.
-	if l.Parallel(with) {
-		return Point{}, false
+func (l Line) ContainsPoint(p Point) bool {
+	buf := Line{0, p.Y}
+	pc, ok := l.crossesLine(buf)
+	if !ok {
+		return false
 	}
 	
+	return pc == p 
+}
+
+func (l Line) Crosses(with Liner) (Point, bool) {
 	switch with.(type) {
 	case Line :
 		return l.crossesLine(with.(Line))
@@ -48,6 +53,10 @@ func (l Line) Crosses(with Liner) (Point, bool) {
 }
 
 func (l1 Line) crossesLine(l2 Line) (Point, bool) {
+	if l1.Parallel(l2) {
+		return Point{}, false
+	}
+	
 	x := (l1.C - l2.C) / (l2.K - l1.K)
 	y := l1.K*x + l1.C
 	return Point{x, y}, true

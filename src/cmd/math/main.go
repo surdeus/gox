@@ -33,6 +33,7 @@ func main() {
 		gx.Point{1, 0},
 	}.Line()
 	fmt.Println(l1.Crosses(l2))
+	fmt.Println(l1.ContainsPoint(gx.Point{1, 4}))
 	/*t := gx.Triangle{
 		gx.Point{0, 0},
 		gx.Point{0, 100},
