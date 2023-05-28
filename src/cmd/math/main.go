@@ -22,6 +22,17 @@ func main() {
 	}
 	
 	for _, l := range lines { fmt.Println(l) }
+	
+	l1 := gx.LineSegment{
+		gx.Point{0, 0},
+		gx.Point{1, 1},
+	}.Line()
+	
+	l2 := gx.LineSegment{
+		gx.Point{0, 1},
+		gx.Point{1, 2},
+	}.Line()
+	fmt.Println(l1.Parallel(l2))
 	/*t := gx.Triangle{
 		gx.Point{0, 0},
 		gx.Point{0, 100},

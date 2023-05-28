@@ -38,10 +38,6 @@ type Engine struct {
 
 type engine Engine
 
-var (
-	Infinity = math.MaxFloat64
-)
-
 // Return current camera.
 func (e *Engine) Camera() *Camera {
 	return e.camera
