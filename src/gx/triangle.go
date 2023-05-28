@@ -33,14 +33,32 @@ func (t Triangle) SideLengthSquares() ([3]Float) {
 	
 	l1 := LineSegment{t[0], t[1]}.LenSqr()
 	l2 := LineSegment{t[1], t[2]}.LenSqr()
-	l2 := LineSegment{t[2], t[0]}.LenSqr()
+	l3 := LineSegment{t[2], t[0]}.LenSqr()
 	
 	return [3]Float{l1, l2, l3}
 }
 
 // Check whether the point is in the triangle.
 func (t Triangle) PointIsIn(p Point) bool {
-	return false	
+	sls := t.SideLengthSquares()
+	
+	sl0 := LineSegment{p, t[0]}.LenSqr()
+	sl1 := LineSegment{p, t[1]}.LenSqr()
+	sl2 := LineSegment{p, t[2]}.LenSqr()
+	
+	if sl0 > sls[0] || sl0 > sls[2] {
+		return false
+	}
+	
+	if sl1 > sls[0] || sl1 > sls[1] {
+		return false
+	}
+	
+	if sl2 > sls[1] || sl2 > sls[2] {
+		return false
+	}
+	
+	return true
 }
 /*
 func (r *DrawableRectangle) Draw(
