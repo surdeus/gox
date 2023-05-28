@@ -30,9 +30,9 @@ func main() {
 	
 	l2 := gx.LineSegment{
 		gx.Point{0, 1},
-		gx.Point{1, 2},
+		gx.Point{1, 0},
 	}.Line()
-	fmt.Println(l1.Parallel(l2))
+	fmt.Println(l1.Crosses(l2))
 	/*t := gx.Triangle{
 		gx.Point{0, 0},
 		gx.Point{0, 100},

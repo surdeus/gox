@@ -1,7 +1,10 @@
 package gx
 
+// The type represents math ray.
 type Ray struct {
+	// The start point.
 	P Point
-	V Vector
+	// Rotation of the ray.
+	R Float
 }
 

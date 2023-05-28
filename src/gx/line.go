@@ -27,6 +27,32 @@ func (l Line) Parallel(liner Liner) bool {
 	return false
 }
 
+func (l Line) Line() Line {
+	return l
+}
+
+func (l Line) Crosses(with Liner) (Point, bool) {
+	// Parallel liners cannot cross by definition.
+	if l.Parallel(with) {
+		return Point{}, false
+	}
+	
+	switch with.(type) {
+	case Line :
+		return l.crossesLine(with.(Line))
+	case LineSegment :
+		return with.(LineSegment).crossesLine(l)
+	default:
+		panic("unhandled type")
+	}
+}
+
+func (l1 Line) crossesLine(l2 Line) (Point, bool) {
+	x := (l1.C - l2.C) / (l2.K - l1.K)
+	y := l1.K*x + l1.C
+	return Point{x, y}, true
+}
+
 // Get square of length of line segment.
 func (ls LineSegment) LenSqr() Float {
 	return Sqr(ls[0].X - ls[1].X) +
@@ -36,10 +62,6 @@ func (ls LineSegment) LenSqr() Float {
 // Get length of the line segment.
 func (ls LineSegment) Len() Float {
 	return math.Sqrt(ls.LenSqr())
-}
-
-func (l Line) Line() Line {
-	return l
 }
 
 // Returns corresponding to the segment line line.
@@ -53,8 +75,7 @@ func (l LineSegment) Line() Line {
 	return Line{k, c}
 }
 
-
-func (l LineSegment) Crosses(with any) (bool, Point) {
+func (l LineSegment) Crosses(with Liner) (Point, bool) {
 	switch with.(type) {
 	case Line :
 		return l.crossesLine(with.(Line))
@@ -63,15 +84,26 @@ func (l LineSegment) Crosses(with any) (bool, Point) {
 	default:
 		panic("The type that is not defined to be crossed")
 	}
-	
-	
 }
 
-func (l LineSegment) crossesLineSegment(with LineSegment) (bool, Point) {
-	return false, Point{}
+func (l LineSegment) Contains(what any) bool {
+	switch what.(type) {
+	case Point :
+		return l.containsPoint(what.(Point))
+	default :
+		panic("Unexpected type")
+	}
 }
 
-func (l LineSegment) crossesLine(with Line) (bool, Point) {
-	return false, Point{}
+func (l LineSegment) containsPoint(p Point) bool {
+	return false
+}
+
+func (l LineSegment) crossesLineSegment(with LineSegment) (Point, bool) {
+	return Point{}, false
+}
+
+func (l LineSegment) crossesLine(with Line) (Point, bool) {
+	return Point{}, false 
 }
 

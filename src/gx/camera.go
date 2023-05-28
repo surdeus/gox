@@ -1,18 +1,10 @@
 package gx
 
-import (
-	"math"
-)
-
 // Implements the camera component
 // for the main window.
 type Camera struct {
 	T Transform
 }
-
-const (
-	Pi = math.Pi
-)
 
 // Returns the matrix satysfying camera
 // position, scale and rotation to apply

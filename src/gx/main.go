@@ -7,7 +7,6 @@ import (
 	"github.com/surdeus/godat/src/poolx"
 	//"fmt"
 	"time"
-	"math"
 )
 
 // The type represents order of drawing.
