@@ -21,9 +21,7 @@ func main() {
 		}.Line(),
 	}
 	
-	for _, l := range lines {
-		fmt.Println(l.Equation())
-	}
+	for _, l := range lines { fmt.Println(l) }
 	/*t := gx.Triangle{
 		gx.Point{0, 0},
 		gx.Point{0, 100},

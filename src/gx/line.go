@@ -4,16 +4,13 @@ import (
 	"math"
 )
 
-// The type represents mathematical equation of line.
-type LineEquation struct {
+// The type represents mathematical equation of line and line itself.
+type Line struct {
 	K, C Float
 }
 
 // The type represents a line segment.
 type LineSegment [2]Point
-
-// The type represents a line.
-type Line LineSegment
 
 // Get square of length of line segment.
 func (ls LineSegment) LenSqr() Float {
@@ -26,18 +23,14 @@ func (ls LineSegment) Len() Float {
 	return math.Sqrt(ls.LenSqr())
 }
 
-// Returns corresponding to the line segment line.
-func (ls LineSegment) Line() Line {
-	return Line(ls)
-}
-
-func (l Line) Equation() LineEquation {
+// Returns corresponding to the segment line line.
+func (l LineSegment) Line() Line {
 	p0 := l[0]
 	p1 := l[1]
 	
 	k := (p0.Y - p1.Y) / (p0.X - p1.X)
 	c := p0.Y - p0.X*k 
 	
-	return LineEquation{k, c}
+	return Line{k, c}
 }
 
