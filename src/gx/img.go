@@ -37,6 +37,11 @@ func LoadImage(input io.Reader) (*Image, error) {
 	return ret, nil
 }
 
+func NewImage(w, h int) (*Image) {
+	return ebiten.NewImage(w, h)
+}
+
+
 func (c Color) RGBA() (r, g, b, a uint32) {
 	return uint32(c.R), uint32(c.G), uint32(c.B), uint32(c.A)
 }

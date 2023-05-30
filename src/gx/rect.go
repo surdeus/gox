@@ -39,26 +39,24 @@ func (r Rectangle) Corners() []Point {
 
 // Get 2 triangles that the rectangle consists of.
 func (r Rectangle) Triangles() Triangles {
-	return Triangles{}
-}
-
-/*func MustNewImage(w, h int) (*Image) {
-	img, err := NewImage(w, h)
-	if err != nil {
-		panic(err)
-	}
+	m := r.Matrix()
+	p1 := r.P.Apply(&m)
+	p2 := r.P.Add(Vector{r.W, 0}).Apply(&m)
+	p3 := r.P.Add(Vector{r.W, -r.H}).Apply(&m)
+	p4 := r.P.Add(Vector{0, -r.H}).Apply(&m)
 	
-	return img
-}*/
+	return Triangles{
+		Triangle{p1, p2, p3},
+		Triangle{p1, p4, p3},
+	}
+}
 
+// Check whether the rectangle contains the point.
 func (r Rectangle) ContainsPoint(p Point) bool {
-	return false
+	return r.Triangles().ContainsPoint(p)
 }
 
-func NewImage(w, h int) (*Image) {
-	return ebiten.NewImage(w, h)
-}
-
+// Check whether the drawable rectangle should be drawn.
 func (r *DrawableRectangle) IsVisible() bool {
 	return r.Visible
 }
@@ -77,8 +75,8 @@ func (r *DrawableRectangle) Draw(
 		t.S.X *= r.W
 		t.S.Y *= r.H
 		
-		m := t.Matrix(e)
-		rm := e.Camera().RealMatrix(e, true)
+		m := t.Matrix()
+		rm := e.Camera().RealMatrix(e)
 		
 		m.Concat(rm)
 		
@@ -108,8 +106,8 @@ func (r *DrawableRectangle) Draw(
 	}
 	
 	
-	rm := e.Camera().RealMatrix(e, true)
-	m := t.Matrix(e)
+	rm := e.Camera().RealMatrix(e)
+	m := t.Matrix()
 	m.Concat(rm)
 	
 	// Drawing with shader.

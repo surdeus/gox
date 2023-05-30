@@ -14,17 +14,13 @@ type Camera struct {
 //  need to calculate it each time for each object. )
 func (c *Camera)RealMatrix(
 	e *Engine,
-	scale bool,
 ) Matrix {
 	g := &Matrix{}
 
-
-	if scale {
-		g.Scale(
-			c.S.X,
-			c.S.Y,
-		)
-	}
+	g.Scale(
+		c.S.X,
+		c.S.Y,
+	)
 
 	g.Translate(
 		-c.P.X,

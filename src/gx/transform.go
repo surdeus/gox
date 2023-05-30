@@ -22,7 +22,7 @@ func T() Transform {
 
 // Returns the GeoM with corresponding
 // to the transfrom transformation 
-func (t Transform)Matrix(e *Engine) Matrix {
+func (t Transform)Matrix() Matrix {
 	g := &Matrix{}
 
 	g.Scale(t.S.X, t.S.Y)

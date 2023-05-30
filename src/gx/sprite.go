@@ -21,11 +21,10 @@ func (s *Sprite) Draw(
 	
 	m := &Matrix{}
 
-	m.Concat(s.Matrix(e))
+	m.Concat(s.Matrix())
 	if !s.Floating {
 		m.Concat(e.Camera().RealMatrix(
 			e,
-			true,
 		))
 	}
 

@@ -55,6 +55,16 @@ func (t Triangle) Sgn() Float {
 		(t[1].X - t[2].X) * (t[0].Y - t[2].Y)
 }
 
+func (ts Triangles) ContainsPoint(p Point) bool {
+	for _, t := range ts {
+		if t.ContainsPoint(p) {
+			return true
+		}
+	}
+	
+	return false
+}
+
 //func (t Triangle)
 /*
 func (r *DrawableRectangle) Draw(

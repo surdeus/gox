@@ -55,6 +55,8 @@ func (r *Rect) Update(e *gx.Engine) error {
 
 var (
 	playerImg *gx.Image
+	player *Player
+	rect *Rect
 )
 
 func NewPlayer() *Player {
@@ -77,6 +79,19 @@ func NewPlayer() *Player {
 	ret.Images[0] = playerImg
 	
 	return ret
+}
+
+func (p *Player) Draw(e *gx.Engine, i *gx.Image) {
+	p.Sprite.Draw(e, i)
+	r := &gx.DrawableRectangle{
+		Rectangle: gx.Rectangle{
+			Transform: p.Transform,
+			W: 10,
+			H: 10,
+		},
+		Color: gx.Color{0, 0, gx.MaxColorV, gx.MaxColorV},
+	}
+	r.Draw(e, i)
 }
 
 func (p *Player) Start(e *gx.Engine, v ...any) {
@@ -153,7 +168,14 @@ func (d *Debug) Draw(
 	for _, k := range e.Keys() {
 		keyStrs = append(keyStrs, k.String())
 	}
-	e.DebugPrint(i, strings.Join(keyStrs, ", "))
+	
+	if rect.ContainsPoint(player.P) {
+		keyStrs = append(keyStrs, "THIS IS SHIT")
+	}
+	
+	e.DebugPrint(i,
+		strings.Join(keyStrs, ", "))
+	
 }
 
 func (d *Debug) IsVisible() bool {return true}
@@ -173,8 +195,12 @@ func main() {
 	}
 
 
-	e.Add(0, NewPlayer())
+	player = NewPlayer()
+	rect = NewRect()
+	
 	e.Add(1, &Debug{})
-	e.Add(-1, NewRect())
+	e.Add(0, player)
+	e.Add(-1, rect)
+	
 	e.Run()
 }

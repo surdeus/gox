@@ -35,16 +35,19 @@ func main() {
 	fmt.Println(l1.Crosses(l2))
 	fmt.Println(l1.ContainsPoint(gx.Point{1, 4}))
 	
-	t := gx.Triangle{
-		gx.Point{0, 0},
-		gx.Point{0, 100},
-		gx.Point{100, 0},
+	t := gx.Rectangle{
+		Transform: gx.Transform{
+			S: gx.Vector{1, 1},
+			P: gx.Point{0, 200},
+		},
+		W: 100,
+		H: 200,
 	}
 	
 	points := []gx.Point{
 		gx.Point{},
 		gx.Point{100, 0},
-		gx.Point{0, 100},
+		gx.Point{0, 99},
 		gx.Point{.1, .1},
 		gx.Point{-1, -1},
 		gx.Point{1, 1},
@@ -53,9 +56,14 @@ func main() {
 		gx.Point{50, 1},
 	}
 	
+	ts := t.Triangles()
+	t1 := ts[0]
+	t2 := ts[1]
+	fmt.Printf("Rectangle triangles:\n\t%v\n\t%v\n", t1, t2)
 	for _, p := range points {
-		fmt.Println(t, p, t.ContainsPoint(p))
+		fmt.Println(p, t.ContainsPoint(p))
 	}
+	
 }
 
 
