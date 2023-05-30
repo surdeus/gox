@@ -12,10 +12,8 @@ type Rectangle struct {
 	// Position of up left corner
 	// and the point to
 	// rotate around(relatively of position, not absolute).
+	// Scale represent width and height.
 	Transform
-	// Width and height.
-	W, H Float
-	
 }
 
 // The type describes rectangle that can be drawn.
@@ -40,10 +38,13 @@ func (r Rectangle) Corners() []Point {
 // Get 2 triangles that the rectangle consists of.
 func (r Rectangle) Triangles() Triangles {
 	m := r.Matrix()
-	p1 := r.P.Apply(&m)
-	p2 := r.P.Add(Vector{r.W, 0}).Apply(&m)
-	p3 := r.P.Add(Vector{r.W, -r.H}).Apply(&m)
-	p4 := r.P.Add(Vector{0, -r.H}).Apply(&m)
+	
+	p1 := V(0, 0).Apply(&m)
+	p2 := V(1, 0).Apply(&m)
+	p3 := V(1, -1).Apply(&m)
+	p4 := V(0, -1).Apply(&m)
+	
+	//fmt.Println("in:", p1, p2, p3, p4)
 	
 	return Triangles{
 		Triangle{p1, p2, p3},
@@ -72,9 +73,6 @@ func (r *DrawableRectangle) Draw(
 		img := NewImage(1, 1)
 		img.Set(0, 0, r.Color)
 		
-		t.S.X *= r.W
-		t.S.Y *= r.H
-		
 		m := t.Matrix()
 		rm := e.Camera().RealMatrix(e)
 		
@@ -89,21 +87,21 @@ func (r *DrawableRectangle) Draw(
 	
 	
 	// Use the Color as base image if no is provided.
-	var did bool
+	//var did bool
 	if r.Images[0] == nil {
 		r.Images[0] = NewImage(1, 1)
 		r.Images[0].Set(0, 0, r.Color)
-		did = true
+		//did = true
 	} 
 	
 	w, h := r.Images[0].Size()
-	if !did {
+	/*if !did {
 		t.S.X /= Float(w)
 		t.S.Y /= Float(h)
 		
 		t.S.X *= r.W
 		t.S.Y *= r.H
-	}
+	}*/
 	
 	
 	rm := e.Camera().RealMatrix(e)

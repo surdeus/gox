@@ -37,11 +37,11 @@ func main() {
 	
 	t := gx.Rectangle{
 		Transform: gx.Transform{
-			S: gx.Vector{1, 1},
+			S: gx.Vector{100, 200},
 			P: gx.Point{0, 200},
+			RA: gx.Point{0, 0},
+			R: 0,
 		},
-		W: 100,
-		H: 200,
 	}
 	
 	points := []gx.Point{

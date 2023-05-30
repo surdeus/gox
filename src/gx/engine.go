@@ -5,7 +5,7 @@ import (
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
 	"github.com/surdeus/godat/src/sparsex"
 	"github.com/surdeus/godat/src/poolx"
-	//"fmt"
+	"fmt"
 	"time"
 )
 
@@ -56,6 +56,9 @@ func (e *Engine) Keys() []Key {
 func New(
 	cfg *WindowConfig,
 ) *Engine {
+	w := Float(cfg.Width)
+	h := Float(cfg.Height)
+	fmt.Println("res:", w, h)
 	return &Engine{
 		wcfg: cfg,
 		layers: sparsex.New[
@@ -65,6 +68,7 @@ func New(
 		camera: &Camera{
 			Transform: Transform{
 					S: Vector{1, 1},
+					RA: V(w/2, h/2),
 			},
 		},
 		updaters: poolx.New[Updater](),

@@ -16,22 +16,10 @@ func (c *Camera)RealMatrix(
 	e *Engine,
 ) Matrix {
 	g := &Matrix{}
-
-	g.Scale(
-		c.S.X,
-		c.S.Y,
-	)
-
-	g.Translate(
-		-c.P.X,
-		c.P.Y,
-	)
-	g.Rotate(-c.R)
-
-	g.Translate(
-		c.RA.X,
-		-c.RA.Y,
-	)
+	g.Scale(c.S.X, c.S.Y)
+	g.Translate(-c.P.X, -c.P.Y)
+	g.Rotate(c.R)
+	g.Translate(c.RA.X, c.RA.Y)
 
 	return *g
 }

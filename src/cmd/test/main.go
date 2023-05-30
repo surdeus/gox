@@ -26,9 +26,12 @@ type Rect struct {
 func NewRect() *Rect {
 	return &Rect{&gx.DrawableRectangle{
 			Rectangle: gx.Rectangle{
-				Transform: gx.T(),
-				W: 200,
-				H: 400,
+				Transform: gx.Transform{
+					S: gx.Vector{
+						X: 200,
+						Y: 400,
+					},
+				},
 			},
 			Color: gx.Color{
 				gx.MaxColorV,
@@ -85,9 +88,10 @@ func (p *Player) Draw(e *gx.Engine, i *gx.Image) {
 	p.Sprite.Draw(e, i)
 	r := &gx.DrawableRectangle{
 		Rectangle: gx.Rectangle{
-			Transform: p.Transform,
-			W: 10,
-			H: 10,
+			Transform: gx.Transform{
+				P: player.P,
+				S: gx.Vector{10, 10},
+			},
 		},
 		Color: gx.Color{0, 0, gx.MaxColorV, gx.MaxColorV},
 	}
@@ -97,7 +101,7 @@ func (p *Player) Draw(e *gx.Engine, i *gx.Image) {
 func (p *Player) Start(e *gx.Engine, v ...any) {
 	fmt.Println("starting")
 	c := e.Camera()
-	c.RA = gx.V(360, -240)
+	c.RA = gx.V(360, 240)
 }
 
 func (p *Player) Update(e *gx.Engine) error {
