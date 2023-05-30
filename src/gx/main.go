@@ -63,7 +63,7 @@ func New(
 			*poolx.Pool[Drawer],
 		](true),
 		camera: &Camera{
-			T: Transform{
+			Transform: Transform{
 					S: Vector{1, 1},
 			},
 		},

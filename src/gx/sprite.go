@@ -5,10 +5,8 @@ import (
 )
 
 type Sprite struct {
-	T Transform
-	Shader *Shader
-	Images [4]*Image
-	Uniforms map[string] any
+	Transform
+	ShaderOptions
 	Floating, Visible bool
 }
 
@@ -23,7 +21,7 @@ func (s *Sprite) Draw(
 	
 	m := &Matrix{}
 
-	m.Concat(s.T.Matrix(e))
+	m.Concat(s.Matrix(e))
 	if !s.Floating {
 		m.Concat(e.Camera().RealMatrix(
 			e,

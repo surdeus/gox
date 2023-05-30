@@ -12,7 +12,7 @@ type Rectangle struct {
 	// Position of up left corner
 	// and the point to
 	// rotate around(relatively of position, not absolute).
-	T Transform
+	Transform
 	// Width and height.
 	W, H Float
 	
@@ -21,18 +21,12 @@ type Rectangle struct {
 // The type describes rectangle that can be drawn.
 type DrawableRectangle struct {
 	Rectangle
+	ShaderOptions	
 	
 	// Solid color of the rectangle.
 	// Will be ignored if the Shader
 	// field is not nil.
 	Color Color
-	
-	// Shader to be applied
-	Shader *Shader
-	// Shader variables.
-	Uniforms map[string] any
-	// Shader images
-	Images [4]*Image
 	
 	// Should be draw or not.
 	Visible bool
@@ -73,7 +67,7 @@ func (r *DrawableRectangle) Draw(
 	e *Engine,
 	i *Image,
 ) {
-	t := r.T
+	t := r.Transform
 	
 	// Draw solid color if no shader.
 	if r.Shader == nil {

@@ -3,7 +3,7 @@ package gx
 // Implements the camera component
 // for the main window.
 type Camera struct {
-	T Transform
+	Transform
 }
 
 // Returns the matrix satysfying camera
@@ -21,20 +21,20 @@ func (c *Camera)RealMatrix(
 
 	if scale {
 		g.Scale(
-			c.T.S.X,
-			c.T.S.Y,
+			c.S.X,
+			c.S.Y,
 		)
 	}
 
 	g.Translate(
-		-c.T.P.X,
-		c.T.P.Y,
+		-c.P.X,
+		c.P.Y,
 	)
-	g.Rotate(-c.T.R)
+	g.Rotate(-c.R)
 
 	g.Translate(
-		c.T.RA.X,
-		-c.T.RA.Y,
+		c.RA.X,
+		-c.RA.Y,
 	)
 
 	return *g

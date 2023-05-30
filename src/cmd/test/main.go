@@ -26,9 +26,9 @@ type Rect struct {
 func NewRect() *Rect {
 	return &Rect{&gx.DrawableRectangle{
 			Rectangle: gx.Rectangle{
+				Transform: gx.T(),
 				W: 200,
 				H: 400,
-				T: gx.T(),
 			},
 			Color: gx.Color{
 				gx.MaxColorV,
@@ -60,13 +60,15 @@ var (
 func NewPlayer() *Player {
 	ret := &Player{
 		Sprite: &gx.Sprite{
-			T: gx.Transform {
+			Transform: gx.Transform {
 				S: gx.Vector{5, 5},
 				RA: gx.Vector{320, 240},
 			},
 			Visible: true,
-			Shader: gx.SolidWhiteColorShader,
-			Uniforms: make(map[string] any),
+			ShaderOptions: gx.ShaderOptions {
+				Shader: gx.SolidWhiteColorShader,
+				Uniforms: make(map[string] any),
+			},
 		},
 		MoveSpeed: 90.,
 		ScaleSpeed: .2,
@@ -80,7 +82,7 @@ func NewPlayer() *Player {
 func (p *Player) Start(e *gx.Engine, v ...any) {
 	fmt.Println("starting")
 	c := e.Camera()
-	c.T.RA = gx.V(360, -240)
+	c.RA = gx.V(360, -240)
 }
 
 func (p *Player) Update(e *gx.Engine) error {
@@ -91,51 +93,51 @@ func (p *Player) Update(e *gx.Engine) error {
 	p.Uniforms["Random"] = any(rand.Float32())
 	for _, v := range keys {switch v {
 	case ebiten.KeyArrowUp :
-		c.T.P.Y += p.MoveSpeed * dt
+		c.P.Y += p.MoveSpeed * dt
 	case ebiten.KeyArrowLeft :
-		c.T.P.X -= p.MoveSpeed * dt
+		c.P.X -= p.MoveSpeed * dt
 	case ebiten.KeyArrowDown :
-		c.T.P.Y -= p.MoveSpeed * dt
+		c.P.Y -= p.MoveSpeed * dt
 	case ebiten.KeyArrowRight :
-		c.T.P.X += p.MoveSpeed * dt
+		c.P.X += p.MoveSpeed * dt
 	case ebiten.KeyW :
-		p.T.P.Y += p.MoveSpeed * dt
+		p.P.Y += p.MoveSpeed * dt
 	case ebiten.KeyA :
-		p.T.P.X -= p.MoveSpeed * dt
+		p.P.X -= p.MoveSpeed * dt
 	case ebiten.KeyS :
-		p.T.P.Y -= p.MoveSpeed * dt
+		p.P.Y -= p.MoveSpeed * dt
 	case ebiten.KeyD :
-		p.T.P.X += p.MoveSpeed * dt
+		p.P.X += p.MoveSpeed * dt
 	case ebiten.KeyR :
-		c.T.R += gx.Pi * p.ScaleSpeed * dt
+		c.R += gx.Pi * p.ScaleSpeed * dt
 	case ebiten.KeyT :
-		c.T.R -= gx.Pi * p.ScaleSpeed * dt
+		c.R -= gx.Pi * p.ScaleSpeed * dt
 	case ebiten.KeyF :
 		if e.KeyIsPressed(ebiten.KeyShift) {
-			c.T.S.X -= gx.Pi * p.ScaleSpeed * dt
+			c.S.X -= gx.Pi * p.ScaleSpeed * dt
 		} else {
-			c.T.S.X += gx.Pi * p.ScaleSpeed * dt
+			c.S.X += gx.Pi * p.ScaleSpeed * dt
 		}
 	case ebiten.KeyG :
 		if e.KeyIsPressed(ebiten.KeyShift) {
-			c.T.S.Y -= gx.Pi * p.ScaleSpeed * dt
+			c.S.Y -= gx.Pi * p.ScaleSpeed * dt
 		} else {
-			c.T.S.Y += gx.Pi * p.ScaleSpeed * dt
+			c.S.Y += gx.Pi * p.ScaleSpeed * dt
 		}
 	case ebiten.KeyZ :
 		if e.KeyIsPressed(ebiten.KeyShift) {
-			c.T.RA.X -= gx.Pi * p.MoveSpeed * dt
+			c.RA.X -= gx.Pi * p.MoveSpeed * dt
 		} else {
-			c.T.RA.X += gx.Pi * p.MoveSpeed * dt
+			c.RA.X += gx.Pi * p.MoveSpeed * dt
 		}
-		log.Println(c.T.RA.X)
+		log.Println(c.RA.X)
 	case ebiten.KeyX :
 		if e.KeyIsPressed(ebiten.KeyShift) {
-			c.T.RA.Y -= gx.Pi * p.MoveSpeed * dt
+			c.RA.Y -= gx.Pi * p.MoveSpeed * dt
 		} else {
-			c.T.RA.Y += gx.Pi * p.MoveSpeed * dt
+			c.RA.Y += gx.Pi * p.MoveSpeed * dt
 		}
-		log.Println(c.T.RA.Y)
+		log.Println(c.RA.Y)
 	case ebiten.Key0 :
 		e.Del(p)
 	}}
