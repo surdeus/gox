@@ -53,6 +53,7 @@ func NewRect() *Rect {
 }
 
 func (r *Rect) Update(e *gx.Engine) error {
+	r.R += 0.3 * e.DT()
 	return nil
 }
 
@@ -90,7 +91,7 @@ func (p *Player) Draw(e *gx.Engine, i *gx.Image) {
 		Rectangle: gx.Rectangle{
 			Transform: gx.Transform{
 				P: player.P,
-				S: gx.Vector{10, 10},
+				S: gx.Vector{100, 100},
 			},
 		},
 		Color: gx.Color{0, 0, gx.MaxColorV, gx.MaxColorV},

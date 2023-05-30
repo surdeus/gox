@@ -41,8 +41,8 @@ func (r Rectangle) Triangles() Triangles {
 	
 	p1 := V(0, 0).Apply(&m)
 	p2 := V(1, 0).Apply(&m)
-	p3 := V(1, -1).Apply(&m)
-	p4 := V(0, -1).Apply(&m)
+	p3 := V(1, 1).Apply(&m)
+	p4 := V(0, 1).Apply(&m)
 	
 	//fmt.Println("in:", p1, p2, p3, p4)
 	
@@ -66,17 +66,14 @@ func (r *DrawableRectangle) Draw(
 	e *Engine,
 	i *Image,
 ) {
-	t := r.Transform
-	
+	m := r.Matrix()
+	rm := e.Camera().RealMatrix(e)
+	m.Concat(rm)
 	// Draw solid color if no shader.
 	if r.Shader == nil {
 		img := NewImage(1, 1)
 		img.Set(0, 0, r.Color)
 		
-		m := t.Matrix()
-		rm := e.Camera().RealMatrix(e)
-		
-		m.Concat(rm)
 		
 		opts := &ebiten.DrawImageOptions{
 			GeoM: m,
@@ -102,11 +99,6 @@ func (r *DrawableRectangle) Draw(
 		t.S.X *= r.W
 		t.S.Y *= r.H
 	}*/
-	
-	
-	rm := e.Camera().RealMatrix(e)
-	m := t.Matrix()
-	m.Concat(rm)
 	
 	// Drawing with shader.
 	opts := &ebiten.DrawRectShaderOptions{
