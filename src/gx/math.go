@@ -18,6 +18,18 @@ func Sqr(v Float) Float {
 	return v * v
 }
 
+func Sgn(v Float) Float {
+	if v > 0 {
+		return 1
+	}
+	
+	if v < 0 {
+		return -1
+	}
+	
+	return 0
+}
+
 func RadiansToDegrees(v Float) Float {
 	return v
 }
@@ -25,4 +37,5 @@ func RadiansToDegrees(v Float) Float {
 func DeegresToRadians(v Float) Float {
 	return v
 }
+
 

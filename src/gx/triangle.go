@@ -39,27 +39,23 @@ func (t Triangle) SideLengthSquares() ([3]Float) {
 }
 
 // Check whether the point is in the triangle.
-func (t Triangle) PointIsIn(p Point) bool {
-	sls := t.SideLengthSquares()
+func (t Triangle) ContainsPoint(p Point) bool {
+	d1 := Triangle{p, t[0], t[1]}.Sgn()
+	d2 := Triangle{p, t[1], t[2]}.Sgn()
+	d3 := Triangle{p, t[2], t[0]}.Sgn()
 	
-	sl0 := LineSegment{p, t[0]}.LenSqr()
-	sl1 := LineSegment{p, t[1]}.LenSqr()
-	sl2 := LineSegment{p, t[2]}.LenSqr()
+	neg := (d1 < 0) || (d2 < 0) || (d3 < 0)
+	pos := (d1 > 0) || (d2 > 0) || (d3 > 0)
 	
-	if sl0 > sls[0] || sl0 > sls[2] {
-		return false
-	}
-	
-	if sl1 > sls[0] || sl1 > sls[1] {
-		return false
-	}
-	
-	if sl2 > sls[1] || sl2 > sls[2] {
-		return false
-	}
-	
-	return true
+	return !(neg && pos)
 }
+
+func (t Triangle) Sgn() Float {
+	return (t[0].X - t[2].X) * (t[1].Y - t[2].Y)  -
+		(t[1].X - t[2].X) * (t[0].Y - t[2].Y)
+}
+
+//func (t Triangle)
 /*
 func (r *DrawableRectangle) Draw(
 	e *Engine,

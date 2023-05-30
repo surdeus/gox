@@ -57,6 +57,10 @@ func (r Rectangle) Triangles() Triangles {
 	return img
 }*/
 
+func (r Rectangle) ContainsPoint(p Point) bool {
+	return false
+}
+
 func NewImage(w, h int) (*Image) {
 	return ebiten.NewImage(w, h)
 }

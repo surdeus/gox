@@ -34,7 +34,8 @@ func main() {
 	}.Line()
 	fmt.Println(l1.Crosses(l2))
 	fmt.Println(l1.ContainsPoint(gx.Point{1, 4}))
-	/*t := gx.Triangle{
+	
+	t := gx.Triangle{
 		gx.Point{0, 0},
 		gx.Point{0, 100},
 		gx.Point{100, 0},
@@ -42,6 +43,8 @@ func main() {
 	
 	points := []gx.Point{
 		gx.Point{},
+		gx.Point{100, 0},
+		gx.Point{0, 100},
 		gx.Point{.1, .1},
 		gx.Point{-1, -1},
 		gx.Point{1, 1},
@@ -51,8 +54,8 @@ func main() {
 	}
 	
 	for _, p := range points {
-		fmt.Println(p, t.PointIsIn(p))
-	}*/
+		fmt.Println(t, p, t.ContainsPoint(p))
+	}
 }
 
 

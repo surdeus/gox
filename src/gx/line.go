@@ -62,6 +62,15 @@ func (l1 Line) crossesLine(l2 Line) (Point, bool) {
 	return Point{x, y}, true
 }
 
+func (l LineSegment) ContainsPoint(p Point) bool {
+	line := l.Line()
+	if !line.ContainsPoint(p) {
+		return false
+	}
+	
+	return false
+}
+
 // Get square of length of line segment.
 func (ls LineSegment) LenSqr() Float {
 	return Sqr(ls[0].X - ls[1].X) +
