@@ -11,6 +11,11 @@ type Vector struct {
 type Point = Vector
 
 type Vectors []Vector
+type Points []Point
+
+type PointContainer interface {
+	ContainsPoint(Point) bool
+}
 
 func V(x, y Float) Vector {
 	return Vector{x, y}
@@ -62,3 +67,20 @@ func (v Vector) Norm() Vector {
 	l := math.Sqrt(v.X*v.X + v.Y*v.Y)
 	return V(v.X / l, v.Y / l)
 }
+
+func (pts Points) Contained(c PointContainer) Points {
+	ret := Points{}
+	
+	for _, pt := range pts {
+		if c.ContainsPoint(pt) {
+			ret = append(ret, pt)
+		}
+	}
+	
+	return ret
+}
+
+func (pts Points) Len() int {
+	return len(pts)
+}
+

@@ -16,6 +16,9 @@ type Liner interface {
 // The type represents a line segment.
 type LineSegment [2]Point
 
+// The type represents multiple line segments.
+type LineSegments []LineSegment
+
 // Check whether the liner is parallel to the line.
 func (l Line) Parallel(liner Liner) bool {
 	buf := liner.Line()

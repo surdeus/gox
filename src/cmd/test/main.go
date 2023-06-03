@@ -53,13 +53,14 @@ func NewRect() *Rect {
 }
 
 func (r *Rect) Update(e *gx.Engine) error {
-	r.R += 0.3 * e.DT()
+	//r.R += 0.3 * e.DT()
 	return nil
 }
 
 var (
 	playerImg *gx.Image
 	player *Player
+	rectMove gx.Rectangle
 	rect *Rect
 )
 
@@ -90,10 +91,11 @@ func (p *Player) Draw(e *gx.Engine, i *gx.Image) {
 	t := p.Transform
 	t.S.X *= 4.
 	t.S.Y *= 4.
+	rectMove = gx.Rectangle{
+		Transform: t,
+	}
 	r := &gx.DrawableRectangle{
-		Rectangle: gx.Rectangle{
-			Transform: t,
-		},
+		Rectangle: rectMove,
 		Color: gx.Color{0, 0, gx.MaxColorV, gx.MaxColorV},
 	}
 	r.Draw(e, i)
@@ -184,7 +186,7 @@ func (d *Debug) Draw(
 		keyStrs = append(keyStrs, k.String())
 	}
 	
-	if rect.ContainsPoint(player.P) {
+	if rectMove.Vertices().Contained(rect).Len() > 0 {
 		keyStrs = append(keyStrs, "THIS IS SHIT")
 	}
 	

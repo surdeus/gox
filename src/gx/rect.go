@@ -9,9 +9,7 @@ import (
 
 // The type describes rectangle geometry.
 type Rectangle struct {
-	// Position of up left corner
-	// and the point to
-	// rotate around(relatively of position, not absolute).
+	// P - position of the rotating center.
 	// Scale represent width and height.
 	Transform
 }
@@ -30,20 +28,27 @@ type DrawableRectangle struct {
 	Visible bool
 }
 
-// Return points of corners of the rectangle.
-func (r Rectangle) Corners() []Point {
-	return []Point{}
-}
-
-// Get 2 triangles that the rectangle consists of.
-func (r Rectangle) Triangles() Triangles {
+// Return points of vertices of the rectangle.
+func (r Rectangle) Vertices() Points {
 	m := r.Matrix()
-	
 	p1 := V(0, 0).Apply(&m)
 	p2 := V(1, 0).Apply(&m)
 	p3 := V(1, 1).Apply(&m)
 	p4 := V(0, 1).Apply(&m)
-	
+	return Points{p1, p2, p3, p4}
+}
+
+func (r Rectangle) Edges() LineSegments {
+	return LineSegments{}
+}
+
+// Get 2 triangles that the rectangle consists of.
+func (r Rectangle) Triangles() Triangles {
+	pts := r.Vertices()
+	p1 := pts[0]
+	p2 := pts[1]
+	p3 := pts[2]
+	p4 := pts[3]
 	//fmt.Println("in:", p1, p2, p3, p4)
 	
 	return Triangles{
