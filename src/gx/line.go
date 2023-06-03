@@ -2,6 +2,7 @@ package gx
 
 import (
 	"math"
+	"fmt"
 )
 
 // The type represents mathematical equation of line and line itself.
@@ -25,7 +26,8 @@ type LineSegment [2]Point
 type LineSegments []LineSegment
 
 type Edge = LineSegment
-type Edges []Vertex
+type Edges = LineSegments
+
 
 
 // Check if two LinerPointContainers do cross and return the
@@ -118,5 +120,22 @@ func (ls LineSegment) LenSqr() Float {
 // Get length of the line segment.
 func (ls LineSegment) Len() Float {
 	return math.Sqrt(ls.LenSqr())
+}
+
+func (what LineSegments) Cross(with LineSegments) ([][2]int, Points) {
+	indexes := [][2]int{}
+	points := Points{}
+	for i := range what {
+		for j := range with {
+			p, cross := LinersCross(what[i], with[j])
+			if cross {
+				fmt.Println("in")
+				points = append(points, p)
+				indexes = append(indexes, [2]int{i, j})
+			}
+		}
+	}
+	
+	return indexes, points
 }
 

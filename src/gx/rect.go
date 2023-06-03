@@ -38,13 +38,13 @@ func (r Rectangle) Vertices() Points {
 	return Points{p1, p2, p3, p4}
 }
 
-func (r Rectangle) Edges() LineSegments {
+func (r Rectangle) Edges() Edges {
 	vs := r.Vertices()
 	return LineSegments{
 		LineSegment{vs[0], vs[1]},
 		LineSegment{vs[1], vs[2]},
 		LineSegment{vs[2], vs[3]},
-		LineSegment{vs[4], vs[0]},
+		LineSegment{vs[3], vs[0]},
 	}
 }
 

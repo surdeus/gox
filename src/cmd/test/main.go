@@ -186,7 +186,8 @@ func (d *Debug) Draw(
 		keyStrs = append(keyStrs, k.String())
 	}
 	
-	if rectMove.Vertices().Contained(rect).Len() > 0 {
+	if rectMove.Vertices().Contained(rect).Len() > 0 ||
+			rect.Vertices().Contained(rectMove).Len() > 0 {
 		keyStrs = append(keyStrs, "THIS IS SHIT")
 	}
 	
