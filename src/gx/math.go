@@ -30,6 +30,22 @@ func Sgn(v Float) Float {
 	return 0
 }
 
+func Max(v1, v2 Float) Float {
+	if v1 > v2 {
+		return v1
+	}
+	
+	return v2
+}
+
+func Min(v1, v2 Float) Float {
+	if v1 < v2 {
+		return v1
+	}
+	
+	return v2
+}
+
 func RadiansToDegrees(v Float) Float {
 	return v
 }

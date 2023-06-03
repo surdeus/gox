@@ -39,7 +39,13 @@ func (r Rectangle) Vertices() Points {
 }
 
 func (r Rectangle) Edges() LineSegments {
-	return LineSegments{}
+	vs := r.Vertices()
+	return LineSegments{
+		LineSegment{vs[0], vs[1]},
+		LineSegment{vs[1], vs[2]},
+		LineSegment{vs[2], vs[3]},
+		LineSegment{vs[4], vs[0]},
+	}
 }
 
 // Get 2 triangles that the rectangle consists of.
