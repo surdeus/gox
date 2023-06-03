@@ -20,6 +20,9 @@ type Color struct {
 // the layers order.
 type Drawer interface {
 	Draw(*Engine, *Image)
+}
+
+type Visibler interface {
 	IsVisible() bool
 }
 

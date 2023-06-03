@@ -19,9 +19,9 @@ func (s *Sprite) Draw(
 		return
 	}
 	
+	t := s.Rectangle().Transform
 	m := &Matrix{}
-
-	m.Concat(s.Matrix())
+	m.Concat(t.Matrix())
 	if !s.Floating {
 		m.Concat(e.Camera().RealMatrix(
 			e,
@@ -36,8 +36,8 @@ func (s *Sprite) Draw(
 		return
 	}
 	
-	// Drawing with shader.
 	w, h := s.Images[0].Size()
+	// Drawing with shader.
 	opts := &ebiten.DrawRectShaderOptions{
 		Images: s.Images,
 		Uniforms: s.Uniforms,
@@ -46,7 +46,26 @@ func (s *Sprite) Draw(
 	i.DrawRectShader(w, h, s.Shader, opts)
 }
 
+// Check is sprite is visible.
 func (s *Sprite) IsVisible() bool {
 	return s.Visible
+}
+
+// Return the rectangle that contains the sprite.
+func (s *Sprite) Rectangle() Rectangle {
+	if s.Images[0] == nil {
+		panic("trying to get rectangle for nil image pointer")
+	}
+	
+	w, h := s.Images[0].Size()
+	t := s.Transform
+	t.RA.X *= Float(w)
+	t.RA.Y *= Float(h)
+	
+	return Rectangle{t}
+}
+
+func (s *Sprite) Triangles() Triangles {
+	return s.Rectangle().Triangles()
 }
 

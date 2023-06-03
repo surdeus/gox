@@ -53,7 +53,7 @@ func (e *Engine) Keys() []Key {
 }
 
 // Returns new empty Engine.
-func New(
+func NewEngine(
 	cfg *WindowConfig,
 ) *Engine {
 	w := Float(cfg.Width)
@@ -157,7 +157,8 @@ func (e *engine) Draw(i *ebiten.Image) {
 	eng := (*Engine)(e)
 	for p := range e.layers.Vals() {
 		for pj := range p.V.Range() {
-			if !pj.V.IsVisible() {
+			visibler, ok := pj.V.(Visibler)
+			if ok && !visibler.IsVisible() {
 				continue
 			}
 			pj.V.Draw(eng, i)

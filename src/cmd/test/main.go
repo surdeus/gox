@@ -68,7 +68,7 @@ func NewPlayer() *Player {
 		Sprite: &gx.Sprite{
 			Transform: gx.Transform {
 				S: gx.Vector{5, 5},
-				RA: gx.Vector{320, 240},
+				RA: gx.Vector{.5, .5},
 			},
 			Visible: true,
 			ShaderOptions: gx.ShaderOptions {
@@ -87,12 +87,12 @@ func NewPlayer() *Player {
 
 func (p *Player) Draw(e *gx.Engine, i *gx.Image) {
 	p.Sprite.Draw(e, i)
+	t := p.Transform
+	t.S.X *= 4.
+	t.S.Y *= 4.
 	r := &gx.DrawableRectangle{
 		Rectangle: gx.Rectangle{
-			Transform: gx.Transform{
-				P: player.P,
-				S: gx.Vector{100, 100},
-			},
+			Transform: t,
 		},
 		Color: gx.Color{0, 0, gx.MaxColorV, gx.MaxColorV},
 	}
@@ -132,6 +132,12 @@ func (p *Player) Update(e *gx.Engine) error {
 		c.R += gx.Pi * p.ScaleSpeed * dt
 	case ebiten.KeyT :
 		c.R -= gx.Pi * p.ScaleSpeed * dt
+	case ebiten.KeyRightBracket :
+		if e.KeyIsPressed(ebiten.KeyShift) {
+			p.R -= gx.Pi * 0.3 * dt
+		} else {
+			p.R += gx.Pi * 0.3 * dt
+		}
 	case ebiten.KeyF :
 		if e.KeyIsPressed(ebiten.KeyShift) {
 			c.S.X -= gx.Pi * p.ScaleSpeed * dt
@@ -150,14 +156,18 @@ func (p *Player) Update(e *gx.Engine) error {
 		} else {
 			c.RA.X += gx.Pi * p.MoveSpeed * dt
 		}
-		log.Println(c.RA.X)
 	case ebiten.KeyX :
 		if e.KeyIsPressed(ebiten.KeyShift) {
 			c.RA.Y -= gx.Pi * p.MoveSpeed * dt
 		} else {
 			c.RA.Y += gx.Pi * p.MoveSpeed * dt
 		}
-		log.Println(c.RA.Y)
+	case ebiten.KeyLeftBracket :
+		if e.KeyIsPressed(ebiten.KeyShift) {
+			rect.R -= gx.Pi * 0.3 * dt
+		} else {
+			rect.R += gx.Pi * 0.3 * dt
+		}
 	case ebiten.Key0 :
 		e.Del(p)
 	}}
@@ -186,7 +196,7 @@ func (d *Debug) Draw(
 func (d *Debug) IsVisible() bool {return true}
 
 func main() {
-	e := gx.New(&gx.WindowConfig{
+	e := gx.NewEngine(&gx.WindowConfig{
 		Title: "Test title",
 		Width: 720,
 		Height: 480,
