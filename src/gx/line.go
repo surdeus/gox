@@ -54,6 +54,19 @@ func LinersParallel(first, second Liner) bool {
 	return l1.K == l2.K
 }
 
+// Returns angle between liners in radians.
+// The value fits the -Pi < Value < Pi condition.
+func LinersAngle(first, second Liner) Float {
+	l1 := first.Line()
+	l2 := second.Line()
+	
+	if l1.K == l2.K {
+		return 0
+	}
+	
+	return math.Atan(l1.K/l2.K)
+}
+
 // Returns the line itself. Made to implement the Liner interface.
 func (l Line) Line() Line {
 	return l

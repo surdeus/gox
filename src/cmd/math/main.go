@@ -21,6 +21,7 @@ func main() {
 		}.Line(),
 	}
 	
+	
 	for _, l := range lines { fmt.Println(l) }
 	
 	l1 := gx.LineSegment{
@@ -32,8 +33,12 @@ func main() {
 		gx.Point{0, 1},
 		gx.Point{1, 0},
 	}.Line()
+	
 	fmt.Println(gx.LinersCross(l1, l2))
 	fmt.Println(l1.ContainsPoint(gx.Point{1, 4}))
+	angle := gx.LinersAngle(l1, l2)
+	fmt.Println("angle:", angle, gx.RadiansToDegrees(angle))
+	
 	
 	t := gx.Rectangle{
 		Transform: gx.Transform{
