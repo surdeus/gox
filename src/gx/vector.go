@@ -22,6 +22,10 @@ func V(x, y Float) Vector {
 	return Vector{x, y}
 }
 
+func (v Vector) Eq(o Vector) bool {
+	return v.X == o.X && v.Y == o.Y
+}
+
 // Returns the vector with the matrix applied
 func (v Vector) Apply(m *Matrix) Vector {
 	x, y := m.Apply(v.X, v.Y)
