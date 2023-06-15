@@ -37,6 +37,11 @@ func NewTri() *Tri {
 			gx.V(100, 100),
 			gx.V(0, -50),
 		},
+		gx.Triangle{
+			gx.V(0, 0),
+			gx.V(-100, -100),
+			gx.V(0, 50),
+		},
 	}
 	ret.Color = gx.Color{gx.MaxColorV, gx.MaxColorV, 0, gx.MaxColorV}
 	ret.Visible = true
