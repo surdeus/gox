@@ -8,11 +8,20 @@ import (
 	"math"
 )
 
-type ColorV uint32
 type Image = ebiten.Image
+
+type ColorV uint32
 type ColorM = ebiten.ColorM
 type Color struct {
 	R, G, B, A ColorV
+}
+
+type Colority struct {
+	Color Color
+}
+
+type Visibility struct {
+	Visible bool
 }
 
 // The interface describes anything that can be
@@ -29,6 +38,10 @@ type Visibler interface {
 const (
 	MaxColorV = math.MaxUint32
 )
+
+func (v Visibility) IsVisible() bool {
+	return v.Visible
+}
 
 func LoadImage(input io.Reader) (*Image, error) {
 	img, _, err := image.Decode(input)

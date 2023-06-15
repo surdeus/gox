@@ -23,6 +23,27 @@ type Rect struct {
 	*gx.DrawableRectangle
 }
 
+type Tri struct {
+	*gx.DrawableTriangles
+}
+
+func NewTri() *Tri {
+	ret := &Tri{}
+	ret.DrawableTriangles = &gx.DrawableTriangles{}
+	
+	ret.Triangles = gx.Triangles{
+		gx.Triangle{
+			gx.V(0, 0),
+			gx.V(100, 100),
+			gx.V(0, -50),
+		},
+	}
+	ret.Color = gx.Color{gx.MaxColorV, gx.MaxColorV, 0, gx.MaxColorV}
+	ret.Visible = true
+	
+	return ret
+}
+
 func NewRect() *Rect {
 	return &Rect{&gx.DrawableRectangle{
 			Rectangle: gx.Rectangle{
@@ -215,10 +236,12 @@ func main() {
 
 	player = NewPlayer()
 	rect = NewRect()
+	tri := NewTri()
 	
 	e.Add(1, &Debug{})
 	e.Add(0, player)
 	e.Add(-1, rect)
+	e.Add(100, tri)
 	
 	e.Run()
 }

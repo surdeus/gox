@@ -2,14 +2,37 @@ package gx
 
 import (
 	"math"
+	"github.com/hajimehoshi/ebiten/v2"
 )
 
-// The structure of a triangle. What more you want to hear?
-type Triangle [3]Point
+// Ebitens vector in better abstractions like Vectors.
+type Vertex struct {
+	Dst Vector
+	Src Vector
+	Colority
+}
+
+type Triangle [3]Vector
 type Triangles []Triangle
-type DrawableTriangle struct {
-	Triangle
+type DrawableTriangles struct {
+	Triangles
+	Visibility
+	Colority
 	ShaderOptions
+	ebiten.DrawTrianglesOptions
+}
+
+func (v Vertex) Ebiten() ebiten.Vertex {
+	return ebiten.Vertex {
+		DstX: float32(v.Dst.X),
+		DstY: float32(v.Dst.Y),
+		SrcX: float32(v.Src.X),
+		SrcY: float32(v.Src.Y),
+		ColorR: float32(v.Color.R)/(float32(MaxColorV)),
+		ColorG: float32(v.Color.G)/(float32(MaxColorV)),
+		ColorB: float32(v.Color.B)/(float32(MaxColorV)),
+		ColorA: float32(v.Color.A)/(float32(MaxColorV)),
+	}
 }
 
 // Returns the area of the triangle.
@@ -65,52 +88,44 @@ func (ts Triangles) ContainsPoint(p Point) bool {
 	return false
 }
 
-//func (t Triangle)
-/*
-func (r *DrawableRectangle) Draw(
+func (r *DrawableTriangles) Draw(
 	e *Engine,
 	i *Image,
 ) {
-	t := r.T
+	m := e.Camera().RealMatrix(e)
+	cm := &m
 	
 	// Draw solid color if no shader.
 	if r.Shader == nil {
-		t.S.X *= r.W
-		t.S.Y *= r.H
-		
-		m := t.Matrix(e)
-		rm := e.Camera().RealMatrix(e, true)
-		
-		m.Concat(rm)
-		
-		opts := &ebiten.DrawImageOptions{
-			GeoM: m,
+		vs := make([]ebiten.Vertex, len(r.Triangles) * 3)
+		var buf Vertex
+		buf.Color = r.Color
+		for i := range r.Triangles {
+			for j := range r.Triangles[i] {
+				buf.Dst = r.Triangles[i][j].Apply(cm)
+				vs[i*3 + j] = buf.Ebiten()
+			}
 		}
-		i.DrawTriangles(img, opts)
+		
+		is := make([]uint16, len(r.Triangles) * 3)
+		for i := 0 ; i < len(is) ; i++ {
+			is[i] = uint16(i)
+		}
+		
+		img := NewImage(1, 1)
+		img.Set(0, 0, r.Color)
+		
+		i.DrawTriangles(vs, is, img, &r.DrawTrianglesOptions)
 		return
 	}
 	
 	// Use the Color as base image if no is provided.
-	var did bool
-	if r.Images[0] == nil {
+	/*if r.Images[0] == nil {
 		r.Images[0] = NewImage(1, 1)
 		r.Images[0].Set(0, 0, r.Color)
-		did = true
 	} 
 	
 	w, h := r.Images[0].Size()
-	if !did {
-		t.S.X /= Float(w)
-		t.S.Y /= Float(h)
-		
-		t.S.X *= r.W
-		t.S.Y *= r.H
-	}
-	
-	
-	rm := e.Camera().RealMatrix(e, true)
-	m := t.Matrix(e)
-	m.Concat(rm)
 	
 	// Drawing with shader.
 	opts := &ebiten.DrawRectShaderOptions{
@@ -118,7 +133,6 @@ func (r *DrawableRectangle) Draw(
 		Images: r.Images,
 		Uniforms: r.Uniforms,
 	}
-	i.DrawRectShader(w, h, r.Shader, opts)
+	i.DrawRectShader(w, h, r.Shader, opts)*/
 }
-*/
 

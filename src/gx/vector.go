@@ -9,7 +9,7 @@ type Vector struct {
 	X, Y Float
 }
 type Point = Vector
-type Vertex = Vector
+//type Vertex = Vector
 
 type Vectors []Vector
 type Points []Point
