@@ -24,12 +24,13 @@ type Rect struct {
 }
 
 type Tri struct {
-	*gx.DrawableTriangles
+	*gx.DrawablePolygon
 }
 
 func NewTri() *Tri {
 	ret := &Tri{}
-	ret.DrawableTriangles = &gx.DrawableTriangles{}
+	ret.DrawablePolygon = &gx.DrawablePolygon{}
+	ret.Transform.S = gx.V(1, 1)
 	
 	ret.Triangles = gx.Triangles{
 		gx.Triangle{
@@ -88,6 +89,7 @@ var (
 	player *Player
 	rectMove gx.Rectangle
 	rect *Rect
+	tri *Tri
 )
 
 func NewPlayer() *Player {
@@ -190,6 +192,12 @@ func (p *Player) Update(e *gx.Engine) error {
 		} else {
 			c.RA.Y += gx.Pi * p.MoveSpeed * dt
 		}
+	case ebiten.KeyV :
+		if e.KeyIsPressed(ebiten.KeyShift) {
+			tri.R -= gx.Pi * 0.3 * dt
+		} else {
+			tri.R += gx.Pi * 0.3 * dt
+		}
 	case ebiten.KeyLeftBracket :
 		if e.KeyIsPressed(ebiten.KeyShift) {
 			rect.R -= gx.Pi * 0.3 * dt
@@ -241,7 +249,7 @@ func main() {
 
 	player = NewPlayer()
 	rect = NewRect()
-	tri := NewTri()
+	tri = NewTri()
 	
 	e.Add(1, &Debug{})
 	e.Add(0, player)
