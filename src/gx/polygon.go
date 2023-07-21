@@ -16,7 +16,6 @@ type Polygon struct {
 // Polygon that can be drawn.
 type DrawablePolygon struct {
 	Polygon
-	
 	ShaderOptions
 	Visibility
 	Colority

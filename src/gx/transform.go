@@ -19,6 +19,10 @@ type Transform struct {
 	P, S, RA Vector
 	// Rotation angle in radians.
 	R Float
+	
+	// The transform that this one transform depends on.
+	// Nil means the object is absolute and does not depend on other object.
+	Parent *Transform
 }
 
 // Returns empty Transform.
@@ -27,6 +31,10 @@ func T() Transform {
 		S: Vector{1, 1},
 	}
 	return ret
+}
+
+func (t Transform) Transformation() Transform {
+	return t
 }
 
 func (t Transform) ScaledToXY(x, y Float) Transform {

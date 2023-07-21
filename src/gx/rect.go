@@ -18,14 +18,8 @@ type Rectangle struct {
 type DrawableRectangle struct {
 	Rectangle
 	ShaderOptions	
-	
-	// Solid color of the rectangle.
-	// Will be ignored if the Shader
-	// field is not nil.
-	Color Color
-	
-	// Should be draw or not.
-	Visible bool
+	Colority 
+	Visibility
 }
 
 // Return points of vertices of the rectangle.

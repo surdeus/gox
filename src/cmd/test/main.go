@@ -27,6 +27,10 @@ type Tri struct {
 	*gx.DrawablePolygon
 }
 
+type MyText struct {
+	*gx.Text
+}
+
 func NewTri() *Tri {
 	ret := &Tri{}
 	ret.DrawablePolygon = &gx.DrawablePolygon{}
@@ -51,7 +55,7 @@ func NewTri() *Tri {
 }
 
 func NewRect() *Rect {
-	return &Rect{&gx.DrawableRectangle{
+	ret := &Rect{&gx.DrawableRectangle{
 			Rectangle: gx.Rectangle{
 				Transform: gx.Transform{
 					S: gx.Vector{
@@ -60,13 +64,6 @@ func NewRect() *Rect {
 					},
 				},
 			},
-			Color: gx.Color{
-				gx.MaxColorV,
-				0,
-				0,
-				gx.MaxColorV,
-			},
-			Visible: true,
 			/*Shader: gx.SolidWhiteColorShader,
 			Options: gx.ShaderOptions{
 				Images: [4]*gx.Image{
@@ -77,6 +74,16 @@ func NewRect() *Rect {
 				},
 			},*/
 	}}
+	
+	ret.Visible = true
+	ret.Color = gx.Color{
+		gx.MaxColorV,
+		0,
+		0,
+		gx.MaxColorV,
+	}
+	
+	return ret
 }
 
 func (r *Rect) Update(e *gx.Engine) error {
@@ -124,8 +131,8 @@ func (p *Player) Draw(e *gx.Engine, i *gx.Image) {
 	}
 	r := &gx.DrawableRectangle{
 		Rectangle: rectMove,
-		Color: gx.Color{0, 0, gx.MaxColorV, gx.MaxColorV},
 	}
+	r.Color = gx.Color{0, 0, gx.MaxColorV, gx.MaxColorV}
 	r.Draw(e, i)
 }
 
@@ -247,6 +254,24 @@ func main() {
 	}
 
 
+	text := &gx.Text{}
+	text.Text = "Hello, Text"
+	text.Color = gx.Color{
+		gx.MaxColorV,
+		gx.MaxColorV,
+		gx.MaxColorV,
+		gx.MaxColorV,
+	}
+	text.Font, err = gx.LoadFont("media/font.ttf", 16)
+	if err != nil {
+		log.Fatal(err)
+	}
+	text.Visible = true
+	text.Transform = gx.T()
+	text.Transform.P = gx.V(100, 100)
+	text.Transform.R = gx.Pi/4
+	text.Transform.S = gx.V(4, 1)
+	
 	player = NewPlayer()
 	rect = NewRect()
 	tri = NewTri()
@@ -255,6 +280,7 @@ func main() {
 	e.Add(0, player)
 	e.Add(-1, rect)
 	e.Add(100, tri)
+	e.Add(1001, text)
 	
 	e.Run()
 }
